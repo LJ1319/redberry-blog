@@ -1,0 +1,8 @@
+root = true
+
+[*]
+indent_style                        = tab
+tab_width                           = 2
+end_of_line                         = crlf
+ij_javascript_force_semicolon_style = true
+trim_trailing_whitespace            = true
