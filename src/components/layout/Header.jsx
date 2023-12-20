@@ -5,7 +5,7 @@ export default function Header() {
 		<div className="bg-white">
 			<div className="m-auto flex h-20 w-11/12 items-center justify-between">
 				<img src={Logo} alt="" />
-				<button className="h-10 w-24 rounded-lg bg-[#5D37F3] text-sm text-white">
+				<button className="h-10 w-24 rounded-lg bg-[#5D37F3] text-sm font-medium text-white">
 					შესვლა
 				</button>
 			</div>
