@@ -2,7 +2,7 @@ import Blog from "../../public/images/Blog.svg";
 import Arrow from "../../public/images/Arrow.svg";
 
 import { axiosFetch } from "@/axios/axiosFetch.js";
-import { extractExcerpt, filterBlogs, formatDate } from "@/helpers.js";
+import { extractExcerpt, getPublishedBlogs, formatDate } from "@/helpers.js";
 import { Link, useLoaderData } from "react-router-dom";
 
 export async function loader() {
@@ -26,7 +26,7 @@ export async function loader() {
 		});
 	}
 
-	const publishedBlogs = filterBlogs(blogs);
+	const publishedBlogs = getPublishedBlogs(blogs);
 
 	// console.log(categories);
 	// console.log(blogs);

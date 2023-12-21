@@ -2,8 +2,10 @@ export function formatDate(publishDate) {
 	return new Date(publishDate).toLocaleDateString("en-GB").replaceAll("/", ".");
 }
 
-export function filterBlogs(blogs) {
-	return blogs.filter((blog) => Date.now() > Date.parse(blog.publish_date));
+export function getPublishedBlogs(blogs) {
+	return blogs
+		.filter((blog) => Date.now() > Date.parse(blog.publish_date))
+		.sort((a, b) => Date.parse(a.publish_date) - Date.parse(b.publish_date));
 }
 
 export function extractExcerpt(description) {
