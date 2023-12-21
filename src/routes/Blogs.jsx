@@ -1,12 +1,12 @@
-import Blog from "../../public/images/Blog.svg";
-import Arrow from "../../public/images/Arrow.svg";
+import blog from "../../public/images/blog.svg";
+import arrow from "../../public/images/arrow.svg";
 
-import { axiosFetch } from "@/axios/axiosFetch.js";
-import { extractExcerpt, getPublishedBlogs, formatDate } from "@/helpers.js";
+import axios from "axios";
 import { Link, useLoaderData } from "react-router-dom";
+import { extractExcerpt, getPublishedBlogs, formatDate } from "@/helpers.js";
 
 export async function loader() {
-	const categoriesResponse = await axiosFetch("/categories");
+	const categoriesResponse = await axios("/categories");
 	const categories = categoriesResponse.data.data;
 
 	if (!categories) {
@@ -16,7 +16,7 @@ export async function loader() {
 		});
 	}
 
-	const blogsResponse = await axiosFetch("/blogs");
+	const blogsResponse = await axios("/blogs");
 	const blogs = blogsResponse.data.data;
 
 	if (!blogs) {
@@ -39,10 +39,10 @@ export default function Blogs() {
 	const { categories, publishedBlogs } = useLoaderData();
 
 	return (
-		<div className="tex-[#1A1A1F] m-auto w-11/12 py-16">
+		<div className="m-auto w-11/12 py-16">
 			<div className="flex items-center justify-between">
 				<h1 className="text-[64px] font-bold">ბლოგი</h1>
-				<img src={Blog} alt="" />
+				<img src={blog} alt="blog" />
 			</div>
 			{categories.length > 0 && (
 				<div className="my-16 flex justify-center gap-6">
@@ -95,7 +95,7 @@ export default function Blogs() {
 								<p>{extractExcerpt(blog.description)}</p>
 								<div className="flex items-center gap-1 text-sm font-medium text-[#5D37F3]">
 									<Link to={`blogs/${blog.id}`}>სრულად ნახვა</Link>
-									<img src={Arrow} alt="arrow" />
+									<img src={arrow} alt="arrow" />
 								</div>
 							</div>
 						</div>

@@ -1,9 +1,9 @@
-import Header from "@/components/layout/Header.jsx";
+import Header from "@/components/Header.jsx";
 import { Outlet } from "react-router-dom";
 
 export default function RootLayout() {
 	return (
-		<div className="h-screen bg-[#f3f2fa]">
+		<div className="h-screen bg-[#f3f2fa] text-[#1A1A1F]">
 			<Header />
 			<main className="bg-[#f3f2fa]">
 				<Outlet />
