@@ -19,7 +19,7 @@ export default function Header() {
 			<div className="m-auto flex h-20 w-11/12 items-center justify-between">
 				<img src={logo} alt="logo" />
 				<button
-					className="h-10 w-24 rounded-lg bg-[#5D37F3] text-sm font-medium text-white"
+					className="h-10 w-24 rounded-lg bg-[#5D37F3] text-sm font-medium text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]"
 					onClick={openModalHandler}
 				>
 					შესვლა
