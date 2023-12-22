@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({});
 
@@ -9,6 +9,18 @@ export function AuthContextProvider({ children }) {
 		isAuthorized,
 		setIsAuthorized,
 	};
+
+	useEffect(() => {
+		const isAuthorizedData = JSON.parse(localStorage.getItem("isAuthorized"));
+
+		if (isAuthorizedData) {
+			setIsAuthorized(isAuthorizedData);
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("isAuthorized", JSON.stringify(isAuthorized));
+	}, [isAuthorized]);
 
 	return (
 		<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
