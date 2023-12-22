@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
+import "./axios/global.js";
+
 import {
 	createBrowserRouter,
 	createRoutesFromElements,
@@ -10,13 +12,13 @@ import {
 } from "react-router-dom";
 
 import RootLayout from "@/layouts/RootLayout.jsx";
+import { action as loginAction } from "@/components/LoginForm.jsx";
 import Error from "@/routes/Error.jsx";
 import Blogs, { loader as blogsLoader } from "@/routes/Blogs.jsx";
 import BlogDetails from "@/routes/BlogDetails.jsx";
 import Create from "@/routes/Create.jsx";
-import { action as loginAction } from "@/components/LoginForm.jsx";
 
-import "./axios/global.js";
+import { AuthContextProvider } from "@/context/AuthContext.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -37,6 +39,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<AuthContextProvider>
+			<RouterProvider router={router} />
+		</AuthContextProvider>
 	</React.StrictMode>,
 );

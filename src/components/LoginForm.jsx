@@ -1,6 +1,9 @@
 import info from "../../public/images/info.svg";
 import tick from "../../public/images/tick.svg";
 
+import { useContext, useEffect } from "react";
+import { AuthContext } from "@/context/AuthContext.jsx";
+
 import axios from "axios";
 import { classNames } from "@/helpers.js";
 import Modal from "@/components/Modal.jsx";
@@ -30,6 +33,14 @@ export async function action({ request }) {
 
 export default function LoginForm({ closeHandler }) {
 	const responseStatus = useActionData();
+	const { setIsAuthorized } = useContext(AuthContext);
+
+	useEffect(() => {
+		if (responseStatus && responseStatus.code === 204) {
+			setIsAuthorized(true);
+		}
+	}, [responseStatus, setIsAuthorized]);
+
 	return (
 		<Modal closeHandler={closeHandler}>
 			{responseStatus && responseStatus.code === 204 ? (
@@ -73,7 +84,7 @@ export default function LoginForm({ closeHandler }) {
 								</p>
 							</div>
 						)}
-						<button className="mt-6 h-11 w-full rounded-lg bg-[#5D37F3] text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]">
+						<button className="mt-6 h-11 w-full rounded-lg bg-[#5D37F3] p-1 text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]">
 							შესვლა
 						</button>
 					</Form>
