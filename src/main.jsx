@@ -16,7 +16,9 @@ import RootLayout from "@/layouts/RootLayout.jsx";
 import { action as loginAction } from "@/components/LoginForm.jsx";
 import Error from "@/routes/Error.jsx";
 import Blogs, { loader as blogsLoader } from "@/routes/Blogs.jsx";
-import BlogDetails from "@/routes/BlogDetails.jsx";
+import BlogDetails, {
+	loader as blogDetailsLoader,
+} from "@/routes/BlogDetails.jsx";
 import Protected from "@/routes/Protected.jsx";
 import Create from "@/routes/Create.jsx";
 
@@ -30,7 +32,11 @@ const router = createBrowserRouter(
 		>
 			<Route errorElement={<Error />}>
 				<Route index="true" element={<Blogs />} loader={blogsLoader} />
-				<Route path="blogs/:id" element={<BlogDetails />} />
+				<Route
+					path="blogs/:id"
+					element={<BlogDetails />}
+					loader={blogDetailsLoader}
+				/>
 				<Route
 					path="create"
 					element={

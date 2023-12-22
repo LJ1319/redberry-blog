@@ -1,5 +1,5 @@
 import Header from "@/components/Header.jsx";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 
 export default function RootLayout() {
 	return (
@@ -8,6 +8,7 @@ export default function RootLayout() {
 			<main className="bg-[#f3f2fa]">
 				<Outlet />
 			</main>
+			<ScrollRestoration />
 		</div>
 	);
 }
