@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import "./axios/global.js";
+import { AuthContextProvider } from "@/context/AuthContext.jsx";
 
 import {
 	createBrowserRouter,
@@ -16,9 +17,8 @@ import { action as loginAction } from "@/components/LoginForm.jsx";
 import Error from "@/routes/Error.jsx";
 import Blogs, { loader as blogsLoader } from "@/routes/Blogs.jsx";
 import BlogDetails from "@/routes/BlogDetails.jsx";
+import Protected from "@/routes/Protected.jsx";
 import Create from "@/routes/Create.jsx";
-
-import { AuthContextProvider } from "@/context/AuthContext.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -31,7 +31,14 @@ const router = createBrowserRouter(
 			<Route errorElement={<Error />}>
 				<Route index="true" element={<Blogs />} loader={blogsLoader} />
 				<Route path="blogs/:id" element={<BlogDetails />} />
-				<Route path="create" element={<Create />} />
+				<Route
+					path="create"
+					element={
+						<Protected>
+							<Create />
+						</Protected>
+					}
+				/>
 			</Route>
 		</Route>,
 	),
