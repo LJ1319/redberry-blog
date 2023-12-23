@@ -1,5 +1,5 @@
-import info from "../../public/images/info.svg";
-import tick from "../../public/images/tick.svg";
+import InfoIcon from "../../public/images/InfoIcon.svg";
+import TickIcon from "../../public/images/TickIcon.svg";
 
 import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext.jsx";
@@ -47,7 +47,7 @@ export default function LoginForm({ closeHandler }) {
 			{responseStatus && responseStatus.code === 204 ? (
 				<div className="pt-8">
 					<div className="flex flex-col items-center gap-4">
-						<img src={tick} alt="tick" />
+						<img src={TickIcon} alt="Tick Icon" />
 						<p className="text-xl font-bold">{responseStatus.message}</p>
 					</div>
 					<button
@@ -79,7 +79,7 @@ export default function LoginForm({ closeHandler }) {
 						/>
 						{responseStatus && responseStatus.code === 422 && (
 							<div className="flex h-5 items-center gap-2">
-								<img src={info} alt="info" />
+								<img src={InfoIcon} alt="Info Icon" />
 								<p className="text-xs text-[#EA1919]">
 									{responseStatus.message}
 								</p>

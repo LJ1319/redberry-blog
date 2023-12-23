@@ -1,4 +1,4 @@
-import blog from "../../public/images/blog.svg";
+import BlogPicture from "../../public/images/BlogPicture.svg";
 
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
@@ -47,25 +47,11 @@ export default function Blogs() {
 			for (const element of blog.categories) {
 				if (Object.values(element).includes(category)) {
 					blogs.push(blog);
-					// setFilteredBlogs([
-					// 	...filteredBlogs,
-					// 	{
-					// 		id: blog.id,
-					// 		title: blog.title,
-					// 		description: blog.description,
-					// 		image: blog.image,
-					// 		publish_date: blog.publish_date,
-					// 		categories: blog.categories,
-					// 		author: blog.author,
-					// 	},
-					// ]);
 				}
 			}
 		});
 
 		setFilteredBlogs([...blogs]);
-
-		console.log(blogs);
 	}
 
 	useEffect(() => {
@@ -76,7 +62,7 @@ export default function Blogs() {
 		<div className="m-auto w-11/12 py-16">
 			<div className="flex items-center justify-between">
 				<h1 className="text-[64px] font-bold">ბლოგი</h1>
-				<img src={blog} alt="blog" />
+				<img src={BlogPicture} alt="Blog Picture" />
 			</div>
 			{categories.length > 0 && (
 				<div className="my-16 flex justify-center gap-6">
@@ -97,13 +83,13 @@ export default function Blogs() {
 			)}
 
 			{filteredBlogs.length > 0 ? (
-				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
 					{filteredBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}
 				</div>
 			) : (
-				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
 					{publishedBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}

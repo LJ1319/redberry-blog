@@ -1,4 +1,4 @@
-import back from "../../public/images/back.svg";
+import BackIcon from "../../public/images/BackIcon.svg";
 
 import axios from "axios";
 import { Link, useLoaderData } from "react-router-dom";
@@ -25,7 +25,7 @@ export default function BlogDetails() {
 						to="/"
 						className="flex h-11 w-11 items-center justify-center rounded-full bg-white"
 					>
-						<img src={back} alt="back" />
+						<img src={BackIcon} alt="Back Icon" />
 					</Link>
 				</div>
 				<div className="w-[720px]">
@@ -60,8 +60,7 @@ export default function BlogDetails() {
 			</div>
 			<div className="my-24 space-y-10">
 				<p className="text-3xl font-bold">მსგავსი სტატიები</p>
-				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
-					<Blog blog={blog} />
+				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
 					<Blog blog={blog} />
 					<Blog blog={blog} />
 					<Blog blog={blog} />

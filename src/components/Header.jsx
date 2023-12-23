@@ -1,4 +1,4 @@
-import logo from "../../public/images/logo.svg";
+import RedberryLogo from "../../public/images/RedberryLogo.svg";
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext.jsx";
@@ -32,7 +32,7 @@ export default function Header() {
 				)}
 			>
 				<Link to="/">
-					<img src={logo} alt="logo" />
+					<img src={RedberryLogo} alt="Redberry Logo" />
 				</Link>
 				{!isAuthorized ? (
 					<button

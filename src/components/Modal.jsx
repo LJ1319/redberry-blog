@@ -1,4 +1,4 @@
-import close from "../../public/images/close.svg";
+import CloseIcon from "../../public/images/CloseIcon.svg";
 
 export default function Modal({ closeHandler, children }) {
 	return (
@@ -8,7 +8,7 @@ export default function Modal({ closeHandler, children }) {
 					className="absolute right-3 top-3 h-10 w-10 rounded-full px-2 outline-none hover:bg-[#F5F4F9] focus:bg-[#F5F4F9]"
 					onClick={closeHandler}
 				>
-					<img src={close} alt="close" />
+					<img src={CloseIcon} alt="Close Icon" />
 				</button>
 				{children}
 			</div>

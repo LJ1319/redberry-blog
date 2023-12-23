@@ -1,6 +1,7 @@
+import ArrowIcon from "../../public/images/ArrowIcon.svg";
+
 import { extractExcerpt, formatDate } from "@/helpers.js";
 import { Link } from "react-router-dom";
-import arrow from "../../public/images/arrow.svg";
 
 export default function Blog({ blog }) {
 	return (
@@ -8,7 +9,7 @@ export default function Blog({ blog }) {
 			<img
 				src={blog.image}
 				alt={blog.description}
-				className="h-80 w-full rounded-xl object-fill"
+				className="object-fit h-80 w-full rounded-xl"
 				// className="aspect-square rounded-xl object-fill"
 			/>
 			<div className="mt-6 space-y-4">
@@ -36,7 +37,7 @@ export default function Blog({ blog }) {
 				<p>{extractExcerpt(blog.description)}</p>
 				<div className="flex items-center gap-1 text-sm font-medium text-[#5D37F3]">
 					<Link to={`/blogs/${blog.id}`}>სრულად ნახვა</Link>
-					<img src={arrow} alt="arrow" />
+					<img src={ArrowIcon} alt="Arrow Icon" />
 				</div>
 			</div>
 		</div>
