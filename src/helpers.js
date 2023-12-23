@@ -8,6 +8,22 @@ export function getPublishedBlogs(blogs) {
 		.sort((a, b) => Date.parse(a.publish_date) - Date.parse(b.publish_date));
 }
 
+export function filterBlogsByCategory(blogs, category) {
+	const filteredBlogs = [];
+
+	blogs.forEach((blog) => {
+		for (const element of blog.categories) {
+			if (Object.values(element).includes(category)) {
+				filteredBlogs.push(blog);
+			}
+		}
+	});
+
+	console.log(filteredBlogs);
+
+	return filteredBlogs;
+}
+
 export function extractExcerpt(description) {
 	const numOfWords = description.split(" ").length;
 

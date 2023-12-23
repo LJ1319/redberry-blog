@@ -2,7 +2,7 @@ import BlogPicture from "../../public/images/BlogPicture.svg";
 
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
-import { getPublishedBlogs } from "@/helpers.js";
+import { filterBlogsByCategory, getPublishedBlogs } from "@/helpers.js";
 import Blog from "@/components/Blog.jsx";
 import { useEffect, useState } from "react";
 
@@ -41,22 +41,8 @@ export default function Blogs() {
 	const [filteredBlogs, setFilteredBlogs] = useState([]);
 
 	function categoryClickHandler(category) {
-		const blogs = [];
-
-		publishedBlogs.forEach((blog) => {
-			for (const element of blog.categories) {
-				if (Object.values(element).includes(category)) {
-					blogs.push(blog);
-				}
-			}
-		});
-
-		setFilteredBlogs([...blogs]);
+		setFilteredBlogs([...filterBlogsByCategory(publishedBlogs, category)]);
 	}
-
-	useEffect(() => {
-		console.log(filteredBlogs);
-	}, [filteredBlogs]);
 
 	return (
 		<div className="m-auto w-11/12 py-16">
