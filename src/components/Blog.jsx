@@ -9,8 +9,7 @@ export default function Blog({ blog }) {
 			<img
 				src={blog.image}
 				alt={blog.description}
-				className="object-fit h-80 w-full rounded-xl"
-				// className="aspect-square rounded-xl object-fill"
+				className="h-80 w-full rounded-xl object-fill"
 			/>
 			<div className="mt-6 space-y-4">
 				<div>
