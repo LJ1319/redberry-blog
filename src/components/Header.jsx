@@ -1,7 +1,7 @@
 import logo from "../../public/images/logo.svg";
 
-import { useContext, useState } from "react";
-import { AuthContext } from "@/context/AuthContext.jsx";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext.jsx";
 
 import { classNames } from "@/helpers.js";
 
@@ -10,7 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
 	const [openModal, setOpenModal] = useState(false);
-	const { isAuthorized } = useContext(AuthContext);
+	const { isAuthorized } = useAuth();
 	const location = useLocation();
 
 	function openModalHandler() {

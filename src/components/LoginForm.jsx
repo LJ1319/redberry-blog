@@ -1,8 +1,8 @@
 import info from "../../public/images/info.svg";
 import tick from "../../public/images/tick.svg";
 
-import { useContext, useEffect } from "react";
-import { AuthContext } from "@/context/AuthContext.jsx";
+import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext.jsx";
 
 import axios from "axios";
 import { classNames } from "@/helpers.js";
@@ -34,7 +34,7 @@ export async function action({ request }) {
 
 export default function LoginForm({ closeHandler }) {
 	const responseStatus = useActionData();
-	const { setIsAuthorized } = useContext(AuthContext);
+	const { setIsAuthorized } = useAuth();
 
 	useEffect(() => {
 		if (responseStatus && responseStatus.code === 204) {

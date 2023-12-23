@@ -64,6 +64,7 @@ export default function BlogDetails() {
 					<Blog blog={blog} />
 					<Blog blog={blog} />
 					<Blog blog={blog} />
+					<Blog blog={blog} />
 				</div>
 			</div>
 		</div>
