@@ -1,10 +1,10 @@
 import blog from "../../public/images/blog.svg";
-import arrow from "../../public/images/arrow.svg";
 
 import axios from "axios";
-import { Link, useLoaderData } from "react-router-dom";
-import { extractExcerpt, getPublishedBlogs, formatDate } from "@/helpers.js";
+import { useLoaderData } from "react-router-dom";
+import { getPublishedBlogs } from "@/helpers.js";
 import Blog from "@/components/Blog.jsx";
+import { useEffect, useState } from "react";
 
 export async function loader() {
 	const categoriesResponse = await axios("/categories");
@@ -38,6 +38,39 @@ export async function loader() {
 
 export default function Blogs() {
 	const { categories, publishedBlogs } = useLoaderData();
+	const [filteredBlogs, setFilteredBlogs] = useState([]);
+
+	function categoryClickHandler(category) {
+		const blogs = [];
+
+		publishedBlogs.forEach((blog) => {
+			for (const element of blog.categories) {
+				if (Object.values(element).includes(category)) {
+					blogs.push(blog);
+					// setFilteredBlogs([
+					// 	...filteredBlogs,
+					// 	{
+					// 		id: blog.id,
+					// 		title: blog.title,
+					// 		description: blog.description,
+					// 		image: blog.image,
+					// 		publish_date: blog.publish_date,
+					// 		categories: blog.categories,
+					// 		author: blog.author,
+					// 	},
+					// ]);
+				}
+			}
+		});
+
+		setFilteredBlogs([...blogs]);
+
+		console.log(blogs);
+	}
+
+	useEffect(() => {
+		console.log(filteredBlogs);
+	}, [filteredBlogs]);
 
 	return (
 		<div className="m-auto w-11/12 py-16">
@@ -55,6 +88,7 @@ export default function Blogs() {
 								backgroundColor: category.background_color,
 							}}
 							className="h-8 rounded-full p-2 text-xs font-medium"
+							onClick={() => categoryClickHandler(category.title)}
 						>
 							{category.title}
 						</button>
@@ -62,7 +96,13 @@ export default function Blogs() {
 				</div>
 			)}
 
-			{publishedBlogs.length > 0 && (
+			{filteredBlogs.length > 0 ? (
+				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
+					{filteredBlogs.map((blog) => (
+						<Blog key={blog.id} blog={blog} />
+					))}
+				</div>
+			) : (
 				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
 					{publishedBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
