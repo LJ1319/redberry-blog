@@ -9,7 +9,7 @@ export async function loader({ params }) {
 	const id = params.id;
 	const res = await axios(`/blogs/${id}`);
 
-	console.log(res.data);
+	// console.log(res.data);
 
 	return res.data;
 }
@@ -36,9 +36,11 @@ export default function BlogDetails() {
 					/>
 					<div className="my-6">
 						<p className="font-medium">{blog.author}</p>
-						<p className="text-xs text-[#85858D]">
-							{formatDate(blog.publish_date)} • {blog.email}
-						</p>
+						<div className="flex gap-1.5 text-xs text-[#85858D]">
+							<p>{formatDate(blog.publish_date)}</p>
+							<span>•</span>
+							<p>{blog.email}</p>
+						</div>
 						<p className="my-8	text-xl font-medium">{blog.title}</p>
 						<div className="flex flex-wrap gap-4">
 							{blog.categories.map((category) => (

@@ -19,7 +19,7 @@ export function filterBlogsByCategory(blogs, category) {
 		}
 	});
 
-	console.log(filteredBlogs);
+	// console.log(filteredBlogs);
 
 	return filteredBlogs;
 }

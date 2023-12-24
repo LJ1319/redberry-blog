@@ -43,15 +43,34 @@ export async function loader() {
 export default function Blogs() {
 	const { categories, publishedBlogs } = useLoaderData();
 	const [filteredBlogs, setFilteredBlogs] = useState([]);
-	const [searchParams, setSearchParams] = useSearchParams({
-		selectedCategory: "",
-	});
-	const selectedCategory = searchParams.get("selectedCategory");
+	const [searchParams, setSearchParams] = useSearchParams();
+	const selectedCategories = searchParams.get("selectedCategories");
 
 	function categoryClickHandler(category) {
 		setSearchParams(
 			(prev) => {
-				prev.set("selectedCategory", category);
+				if (
+					prev.get("selectedCategories") &&
+					prev.get("selectedCategories").includes(category)
+				) {
+					prev.set(
+						"selectedCategories",
+						[...prev.values()][0]
+							.split(",")
+							.filter((item) => item !== category)
+							.toString(),
+					);
+					// console.log([...prev.values()], "removed");
+				} else {
+					prev.set(
+						"selectedCategories",
+						[...prev.values(), category]
+							.filter((item) => item !== "")
+							.toString(),
+					);
+					// console.log([...prev.values()], "added");
+				}
+
 				return prev;
 			},
 			{ replace: true },
@@ -60,11 +79,11 @@ export default function Blogs() {
 
 	useEffect(() => {
 		setFilteredBlogs([
-			...filterBlogsByCategory(publishedBlogs, selectedCategory),
+			...filterBlogsByCategory(publishedBlogs, selectedCategories),
 		]);
 
-		console.log(selectedCategory);
-	}, [selectedCategory, publishedBlogs]);
+		// console.log(selectedCategories);
+	}, [selectedCategories, publishedBlogs]);
 
 	return (
 		<div className="m-auto w-11/12 py-16">
@@ -82,7 +101,7 @@ export default function Blogs() {
 								backgroundColor: category.background_color,
 							}}
 							className={classNames(
-								selectedCategory === category.title
+								selectedCategories?.includes(category.title)
 									? "ring-offset ring-1 ring-black"
 									: "ring-0",
 								"h-8 rounded-full p-2 text-xs font-medium",
