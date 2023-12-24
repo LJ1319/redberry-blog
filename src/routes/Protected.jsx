@@ -1,8 +1,16 @@
 import { useAuth } from "@/context/AuthContext.jsx";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Protected({ children }) {
 	const { isAuthorized } = useAuth();
+	const navigate = useNavigate();
 
-	return isAuthorized ? children : <Navigate to="/" replace={true} />;
+	useEffect(() => {
+		if (!isAuthorized) {
+			navigate("/");
+		}
+	}, [isAuthorized, navigate]);
+
+	return children;
 }
