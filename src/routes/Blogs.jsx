@@ -1,10 +1,10 @@
 import BlogPicture from "../../public/images/BlogPicture.svg";
 
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
 import { filterBlogsByCategory, getPublishedBlogs } from "@/helpers.js";
-import Blog from "@/components/Blog.jsx";
+import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Blog from "@/components/Blog.jsx";
 
 export async function loader() {
 	const categoriesResponse = await axios("/categories");
@@ -39,10 +39,26 @@ export async function loader() {
 export default function Blogs() {
 	const { categories, publishedBlogs } = useLoaderData();
 	const [filteredBlogs, setFilteredBlogs] = useState([]);
+	const [searchParams, setSearchParams] = useSearchParams({
+		selectedCategory: "",
+	});
+	const selectedCategory = searchParams.get("selectedCategory");
 
 	function categoryClickHandler(category) {
-		setFilteredBlogs([...filterBlogsByCategory(publishedBlogs, category)]);
+		setSearchParams(
+			(prev) => {
+				prev.set("selectedCategory", category);
+				return prev;
+			},
+			{ replace: true },
+		);
 	}
+
+	useEffect(() => {
+		setFilteredBlogs([
+			...filterBlogsByCategory(publishedBlogs, selectedCategory),
+		]);
+	}, [selectedCategory, publishedBlogs]);
 
 	return (
 		<div className="m-auto w-11/12 py-16">
