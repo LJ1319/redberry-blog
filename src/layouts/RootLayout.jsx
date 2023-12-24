@@ -5,7 +5,7 @@ export default function RootLayout() {
 	return (
 		<div className="h-screen bg-[#f3f2fa] text-[#1A1A1F]">
 			<Header />
-			<main className="bg-[#f3f2fa]">
+			<main className="bg-[#f3f2fa] py-20">
 				<Outlet />
 			</main>
 			<ScrollRestoration />

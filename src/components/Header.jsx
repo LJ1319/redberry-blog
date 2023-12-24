@@ -22,7 +22,7 @@ export default function Header() {
 	}
 
 	return (
-		<div className="bg-white">
+		<div className="fixed w-full bg-white">
 			<div
 				className={classNames(
 					location.pathname === "/create"
