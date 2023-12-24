@@ -1,7 +1,11 @@
 import BlogPicture from "../../public/images/BlogPicture.svg";
 
 import axios from "axios";
-import { filterBlogsByCategory, getPublishedBlogs } from "@/helpers.js";
+import {
+	classNames,
+	filterBlogsByCategory,
+	getPublishedBlogs,
+} from "@/helpers.js";
 import { useLoaderData, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Blog from "@/components/Blog.jsx";
@@ -58,6 +62,8 @@ export default function Blogs() {
 		setFilteredBlogs([
 			...filterBlogsByCategory(publishedBlogs, selectedCategory),
 		]);
+
+		console.log(selectedCategory);
 	}, [selectedCategory, publishedBlogs]);
 
 	return (
@@ -75,7 +81,12 @@ export default function Blogs() {
 								color: category.text_color,
 								backgroundColor: category.background_color,
 							}}
-							className="h-8 rounded-full p-2 text-xs font-medium"
+							className={classNames(
+								selectedCategory === category.title
+									? "ring-offset ring-1 ring-black"
+									: "ring-0",
+								"h-8 rounded-full p-2 text-xs font-medium",
+							)}
 							onClick={() => categoryClickHandler(category.title)}
 						>
 							{category.title}
@@ -85,13 +96,13 @@ export default function Blogs() {
 			)}
 
 			{filteredBlogs.length > 0 ? (
-				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
 					{filteredBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}
 				</div>
 			) : (
-				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
 					{publishedBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}

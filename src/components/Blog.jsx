@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Blog({ blog }) {
 	return (
-		<div>
+		<div className="w-full">
 			<img
 				src={blog.image}
 				alt={blog.description}

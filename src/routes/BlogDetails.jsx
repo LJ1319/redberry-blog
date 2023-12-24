@@ -60,7 +60,8 @@ export default function BlogDetails() {
 			</div>
 			<div className="my-24 space-y-10">
 				<p className="text-3xl font-bold">მსგავსი სტატიები</p>
-				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
+					<Blog blog={blog} />
 					<Blog blog={blog} />
 					<Blog blog={blog} />
 					<Blog blog={blog} />
