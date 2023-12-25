@@ -20,7 +20,7 @@ export default function BlogDetails() {
 	return (
 		<div className="m-auto w-11/12 py-10">
 			<div className="flex justify-start">
-				<div className="w-1/3">
+				<div className="w-1/4">
 					<Link
 						to="/"
 						className="flex h-11 w-11 items-center justify-center rounded-full bg-white"
@@ -28,11 +28,11 @@ export default function BlogDetails() {
 						<img src={BackIcon} alt="Back Icon" />
 					</Link>
 				</div>
-				<div className="w-[720px]">
+				<div className="w-1/2">
 					<img
 						src={blog.image}
 						alt={blog.description}
-						className="h-80 w-full rounded-xl object-cover"
+						className="h-96 w-full rounded-xl object-fill"
 					/>
 					<div className="my-6">
 						<p className="font-medium">{blog.author}</p>
@@ -62,8 +62,7 @@ export default function BlogDetails() {
 			</div>
 			<div className="my-24 space-y-10">
 				<p className="text-3xl font-bold">მსგავსი სტატიები</p>
-				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
-					<Blog blog={blog} />
+				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
 					<Blog blog={blog} />
 					<Blog blog={blog} />
 					<Blog blog={blog} />

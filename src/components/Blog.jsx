@@ -9,7 +9,7 @@ export default function Blog({ blog }) {
 			<img
 				src={blog.image}
 				alt={blog.description}
-				className="h-80 w-full rounded-xl object-fill"
+				className="h-80 w-full rounded-xl object-cover"
 			/>
 			<div className="mt-6 space-y-4">
 				<div>
@@ -35,7 +35,7 @@ export default function Blog({ blog }) {
 				</div>
 				<p>{extractExcerpt(blog.description)}</p>
 				<div className="text-sm font-medium text-[#5D37F3]">
-					<Link to={`/blogs/${blog.id}`} className="flex items-center gap-1 ">
+					<Link to={`/blogs/${blog.id}`} className="flex items-center gap-1">
 						სრულად ნახვა
 						<img src={ArrowIcon} alt="Arrow Icon" />
 					</Link>

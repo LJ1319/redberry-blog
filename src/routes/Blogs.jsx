@@ -115,13 +115,13 @@ export default function Blogs() {
 			)}
 
 			{filteredBlogs.length > 0 ? (
-				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
 					{filteredBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}
 				</div>
 			) : (
-				<div className="grid grid-cols-4 gap-x-8 gap-y-14">
+				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
 					{publishedBlogs.map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}

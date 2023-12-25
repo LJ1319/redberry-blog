@@ -7,7 +7,7 @@ export default function Modal({ closeHandler, children }) {
 			onClick={closeHandler}
 		>
 			<div
-				className="relative h-[300px] w-[480px] rounded-xl bg-white p-6 shadow-xl transition-all"
+				className="relative h-80 w-1/4 rounded-xl bg-white p-6 shadow-xl transition-all"
 				onClick={(e) => e.stopPropagation()}
 			>
 				<button
