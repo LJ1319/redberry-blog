@@ -1,7 +1,7 @@
 import InfoIcon from "../../public/images/InfoIcon.svg";
 import TickIcon from "../../public/images/TickIcon.svg";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext.jsx";
 
 import axios from "axios";
@@ -36,6 +36,12 @@ export default function LoginForm({ closeHandler }) {
 	const responseStatus = useActionData();
 	const { setIsAuthorized } = useAuth();
 
+	const inputRef = useRef(null);
+
+	useEffect(() => {
+		inputRef.current.focus();
+	}, []);
+
 	useEffect(() => {
 		if (responseStatus && responseStatus.code === 204) {
 			setIsAuthorized(true);
@@ -65,6 +71,7 @@ export default function LoginForm({ closeHandler }) {
 							ელ-ფოსტა
 						</label>
 						<input
+							ref={inputRef}
 							type="email"
 							id="email"
 							name="email"
