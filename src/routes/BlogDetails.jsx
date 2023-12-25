@@ -34,14 +34,14 @@ export default function BlogDetails() {
 						alt={blog.description}
 						className="h-96 w-full rounded-xl"
 					/>
-					<div className="my-6">
+					<div className="mt-10">
 						<p className="font-medium">{blog.author}</p>
 						<div className="flex gap-1.5 text-xs text-[#85858D]">
 							<p>{formatDate(blog.publish_date)}</p>
 							<span>•</span>
 							<p>{blog.email}</p>
 						</div>
-						<p className="my-8	text-xl font-medium">{blog.title}</p>
+						<p className="my-6 text-xl font-medium">{blog.title}</p>
 						<div className="flex flex-wrap gap-4">
 							{blog.categories.map((category) => (
 								<div
@@ -56,7 +56,7 @@ export default function BlogDetails() {
 								</div>
 							))}
 						</div>
-						<p className="my-6">{blog.description}</p>
+						<p className="mt-10">{blog.description}</p>
 					</div>
 				</div>
 			</div>
