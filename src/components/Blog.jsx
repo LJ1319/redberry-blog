@@ -34,9 +34,11 @@ export default function Blog({ blog }) {
 					))}
 				</div>
 				<p>{extractExcerpt(blog.description)}</p>
-				<div className="flex items-center gap-1 text-sm font-medium text-[#5D37F3]">
-					<Link to={`/blogs/${blog.id}`}>სრულად ნახვა</Link>
-					<img src={ArrowIcon} alt="Arrow Icon" />
+				<div className="text-sm font-medium text-[#5D37F3]">
+					<Link to={`/blogs/${blog.id}`} className="flex items-center gap-1 ">
+						სრულად ნახვა
+						<img src={ArrowIcon} alt="Arrow Icon" />
+					</Link>
 				</div>
 			</div>
 		</div>
