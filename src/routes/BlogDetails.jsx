@@ -32,7 +32,7 @@ export default function BlogDetails() {
 					<img
 						src={blog.image}
 						alt={blog.description}
-						className="h-96 w-full rounded-xl object-fill"
+						className="h-96 w-full rounded-xl"
 					/>
 					<div className="my-6">
 						<p className="font-medium">{blog.author}</p>

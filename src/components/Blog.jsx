@@ -9,7 +9,7 @@ export default function Blog({ blog }) {
 			<img
 				src={blog.image}
 				alt={blog.description}
-				className="h-80 w-full rounded-xl object-cover"
+				className="h-80 w-full rounded-xl"
 			/>
 			<div className="mt-6 space-y-4">
 				<div>
