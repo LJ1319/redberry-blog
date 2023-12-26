@@ -2,8 +2,8 @@ import BackIcon from "../../public/images/BackIcon.svg";
 
 import axios from "axios";
 import { Link, useLoaderData } from "react-router-dom";
-import Blog from "@/components/Blog.jsx";
 import { formatDate } from "@/helpers.js";
+import Carousel from "@/components/Carousel.jsx";
 
 export async function loader({ params }) {
 	const id = params.id;
@@ -60,14 +60,7 @@ export default function BlogDetails() {
 					</div>
 				</div>
 			</div>
-			<div className="my-24 space-y-10">
-				<p className="text-3xl font-bold">მსგავსი სტატიები</p>
-				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
-					<Blog blog={blog} />
-					<Blog blog={blog} />
-					<Blog blog={blog} />
-				</div>
-			</div>
+			<Carousel title="მსგავსი სტატიები" data={blog} />
 		</div>
 	);
 }
