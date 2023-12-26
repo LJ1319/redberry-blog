@@ -3,7 +3,7 @@ import BlogPicture from "../../public/images/BlogPicture.svg";
 import axios from "axios";
 import {
 	classNames,
-	filterBlogsByCategory,
+	filterBlogsByCategories,
 	getPublishedBlogs,
 } from "@/helpers.js";
 import { useLoaderData, useSearchParams } from "react-router-dom";
@@ -79,10 +79,8 @@ export default function Blogs() {
 
 	useEffect(() => {
 		setFilteredBlogs([
-			...filterBlogsByCategory(publishedBlogs, selectedCategories),
+			...filterBlogsByCategories(publishedBlogs, selectedCategories),
 		]);
-
-		// console.log(selectedCategories);
 	}, [selectedCategories, publishedBlogs]);
 
 	return (

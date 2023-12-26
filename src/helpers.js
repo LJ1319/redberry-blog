@@ -8,21 +8,21 @@ export function getPublishedBlogs(blogs) {
 		.sort((a, b) => Date.parse(a.publish_date) - Date.parse(b.publish_date));
 }
 
-export function filterBlogsByCategory(blogs, categories) {
-	const filteredBlogs = [];
+export function filterBlogsByCategories(blogs, categories) {
+	const filteredBlogs = new Set();
 
-	// console.log(categories);
-
-	blogs.forEach((blog) => {
-		for (const element of blog.categories) {
-			if (Object.values(element).includes(categories)) {
-				filteredBlogs.push(blog);
+	if (categories) {
+		// console.log(categories);
+		blogs.forEach((blog) => {
+			for (const element of blog.categories) {
+				if (categories.includes(Object.values(element)[1])) {
+					filteredBlogs.add(blog);
+				}
 			}
-		}
-	});
+		});
+	}
 
 	// console.log(filteredBlogs);
-
 	return filteredBlogs;
 }
 
