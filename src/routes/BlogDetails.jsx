@@ -1,21 +1,40 @@
 import BackIcon from "../../public/images/BackIcon.svg";
 
 import axios from "axios";
+import { formatDate, getPublishedBlogs, getSimilarBlogs } from "@/helpers.js";
 import { Link, useLoaderData } from "react-router-dom";
-import { formatDate } from "@/helpers.js";
 import Carousel from "@/components/Carousel.jsx";
 
 export async function loader({ params }) {
 	const id = params.id;
-	const res = await axios(`/blogs/${id}`);
+	const blogResponse = await axios(`/blogs/${id}`);
+	const blog = blogResponse.data;
 
-	// console.log(res.data);
+	if (!blog) {
+		throw new Response("", {
+			status: 404,
+			statusText: "Blog Not Found",
+		});
+	}
 
-	return res.data;
+	const blogsResponse = await axios("/blogs");
+	const blogs = blogsResponse.data.data;
+
+	if (!blogs) {
+		throw new Response("", {
+			status: 404,
+			statusText: "Blogs Not Found",
+		});
+	}
+
+	const publishedBlogs = getPublishedBlogs(blogs);
+	const similarBlogs = getSimilarBlogs(publishedBlogs, blog.categories);
+
+	return { blog, similarBlogs };
 }
 
 export default function BlogDetails() {
-	const blog = useLoaderData();
+	const { blog, similarBlogs } = useLoaderData();
 
 	return (
 		<div className="m-auto w-11/12 py-10">
@@ -60,7 +79,7 @@ export default function BlogDetails() {
 					</div>
 				</div>
 			</div>
-			<Carousel title="მსგავსი სტატიები" data={blog} />
+			<Carousel title="მსგავსი სტატიები" similarBlogs={[...similarBlogs]} />
 		</div>
 	);
 }

@@ -1,7 +1,3 @@
-export function formatDate(publishDate) {
-	return new Date(publishDate).toLocaleDateString("en-GB").replaceAll("/", ".");
-}
-
 export function getPublishedBlogs(blogs) {
 	return blogs
 		.filter((blog) => Date.now() > Date.parse(blog.publish_date))
@@ -11,7 +7,8 @@ export function getPublishedBlogs(blogs) {
 export function filterBlogsByCategories(blogs, categories) {
 	const filteredBlogs = new Set();
 
-	if (categories) {
+	if (blogs && categories) {
+		// console.log(blogs);
 		// console.log(categories);
 		blogs.forEach((blog) => {
 			for (const element of blog.categories) {
@@ -24,6 +21,31 @@ export function filterBlogsByCategories(blogs, categories) {
 
 	// console.log(filteredBlogs);
 	return filteredBlogs;
+}
+
+export function getSimilarBlogs(blogs, categories) {
+	const similarBlogs = new Set();
+
+	if (blogs && categories) {
+		// console.log(blogs);
+		// console.log(categories);
+		blogs.forEach((blog) => {
+			for (const element of blog.categories) {
+				categories.forEach((category) => {
+					if (category.title === Object.values(element)[1]) {
+						similarBlogs.add(blog);
+					}
+				});
+			}
+		});
+	}
+
+	// console.log(similarBlogs);
+	return similarBlogs;
+}
+
+export function formatDate(publishDate) {
+	return new Date(publishDate).toLocaleDateString("en-GB").replaceAll("/", ".");
 }
 
 export function extractExcerpt(description) {
