@@ -1,33 +1,40 @@
-import BackIconLight from "../../public/images/BackIconLight.svg";
+import PrevIcon from "../../public/images/PrevIcon.svg";
 import NextIcon from "../../public/images/NextIcon.svg";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Blog from "@/components/Blog.jsx";
 import { classNames } from "@/helpers.js";
 
 export default function Carousel({ title, similarBlogs }) {
-	const [start, setStart] = useState(0);
-	const [finish, setFinish] = useState(3);
+	const [index, setIndex] = useState(0);
+	const [isPrevDisabled, setIsPrevDisabled] = useState(true);
+	const [isNextDisabled, setIsNextDisabled] = useState(false);
 
-	function handlePrevClick() {
-		setStart((prevState) => prevState - 1);
-		setFinish((prevState) => prevState - 1);
-
-		if (start <= 0) {
-			setStart(similarBlogs.length - 3);
-			setFinish(similarBlogs.length);
+	function prevClickHandler() {
+		if (index > 0) {
+			setIndex((prevState) => prevState - 1);
 		}
 	}
 
-	function handleNextClick() {
-		setStart((prevState) => prevState + 1);
-		setFinish((prevState) => prevState + 1);
-
-		if (finish > similarBlogs.length - 1) {
-			setStart(0);
-			setFinish(3);
+	function nextClickHandler() {
+		if (index !== similarBlogs.length - 3) {
+			setIndex((prevState) => prevState + 1);
 		}
 	}
+
+	useEffect(() => {
+		if (index > 0) {
+			setIsPrevDisabled(false);
+		} else {
+			setIsPrevDisabled(true);
+		}
+
+		if (index === similarBlogs.length - 3) {
+			setIsNextDisabled(true);
+		} else {
+			setIsNextDisabled(false);
+		}
+	}, [index, similarBlogs]);
 
 	return (
 		<div className="my-24 space-y-10">
@@ -38,19 +45,23 @@ export default function Carousel({ title, similarBlogs }) {
 						className={classNames(
 							similarBlogs.length === 0 &&
 								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
+							isPrevDisabled &&
+								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
 							"flex h-11 w-11 items-center justify-center rounded-full bg-[#5D37F3] outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]",
 						)}
-						onClick={handlePrevClick}
+						onClick={prevClickHandler}
 					>
-						<img src={BackIconLight} alt="Back Icon" />
+						<img src={PrevIcon} alt="Back Icon" />
 					</button>
 					<button
 						className={classNames(
 							similarBlogs.length === 0 &&
 								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
+							isNextDisabled &&
+								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
 							"flex h-11 w-11 items-center justify-center rounded-full bg-[#5D37F3] outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]",
 						)}
-						onClick={handleNextClick}
+						onClick={nextClickHandler}
 					>
 						<img src={NextIcon} alt="Next Icon" />
 					</button>
@@ -58,7 +69,7 @@ export default function Carousel({ title, similarBlogs }) {
 			</div>
 			{similarBlogs.length > 0 ? (
 				<div className="grid grid-cols-3 gap-x-8 gap-y-14">
-					{similarBlogs.slice(start, finish).map((blog) => (
+					{similarBlogs.slice(index, index + 3).map((blog) => (
 						<Blog key={blog.id} blog={blog} />
 					))}
 				</div>
