@@ -1,18 +1,21 @@
 import InfoIcon from "../../public/images/InfoIcon.svg";
 import TickIcon from "../../public/images/TickIcon.svg";
 
-import { useEffect, useRef } from "react";
-import { useAuth } from "@/context/AuthContext.jsx";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { LoginSchema } from "@/schemas/schemas.js";
 
 import axios from "axios";
-import { classNames } from "@/helpers.js";
-
 import Modal from "@/components/Modal.jsx";
+import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext.jsx";
+import { classNames } from "@/helpers.js";
 import { Form, useActionData } from "react-router-dom";
 
 export async function action({ request }) {
 	const formData = await request.formData();
 	const postData = Object.fromEntries(formData);
+	// console.log(postData);
 
 	let responseStatus = {
 		code: "",
@@ -36,11 +39,18 @@ export default function LoginForm({ closeHandler }) {
 	const responseStatus = useActionData();
 	const { setIsAuthorized } = useAuth();
 
-	const inputRef = useRef(null);
+	const {
+		register,
+		setFocus,
+		formState: { errors },
+	} = useForm({
+		resolver: yupResolver(LoginSchema),
+		mode: "onChange",
+	});
 
 	useEffect(() => {
-		inputRef.current.focus();
-	}, []);
+		setFocus("email");
+	}, [setFocus]);
 
 	useEffect(() => {
 		if (responseStatus && responseStatus.code === 204) {
@@ -66,24 +76,41 @@ export default function LoginForm({ closeHandler }) {
 			) : (
 				<>
 					<p className="my-6 text-center text-2xl font-bold">შესვლა</p>
-					<Form method="post">
+					<Form
+						method="post"
+						onSubmit={(event) => {
+							if (errors.email) {
+								event.preventDefault();
+							}
+						}}
+					>
 						<label htmlFor="email" className="text-sm font-medium">
 							ელ-ფოსტა
 						</label>
-						<input
-							ref={inputRef}
-							type="email"
-							id="email"
-							name="email"
-							placeholder="Example@redberry.ge"
-							required
-							className={classNames(
-								responseStatus &&
-									responseStatus.code === 422 &&
-									"border-[#EA1919] bg-[#FAF2F3]",
-								"radius-xl my-2 h-11 w-full rounded-xl border-2 border-[#E4E3EB] bg-[#FCFCFD] p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+						<div>
+							<input
+								{...register("email")}
+								id="email"
+								name="email"
+								placeholder="Example@redberry.ge"
+								className={classNames(
+									errors.email
+										? "border-[#EA1919] bg-[#FAF2F3]"
+										: responseStatus && responseStatus.code === 422
+											? "border-[#EA1919] bg-[#FAF2F3]"
+											: "border-[#14D81C] bg-[#F8FFF8]",
+									"radius-xl my-2 h-11 w-full rounded-xl border-2 border-[#E4E3EB] bg-[#FCFCFD] p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+								)}
+							/>
+							{errors.email && (
+								<div className="flex h-5 items-center gap-2">
+									<img src={InfoIcon} alt="Info Icon" />
+									<p className="text-xs text-[#EA1919]">
+										{errors.email.message}
+									</p>
+								</div>
 							)}
-						/>
+						</div>
 						{responseStatus && responseStatus.code === 422 && (
 							<div className="flex h-5 items-center gap-2">
 								<img src={InfoIcon} alt="Info Icon" />
