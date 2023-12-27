@@ -96,10 +96,12 @@ export default function LoginForm({ closeHandler }) {
 								className={classNames(
 									errors.email
 										? "border-[#EA1919] bg-[#FAF2F3]"
-										: responseStatus && responseStatus.code === 422
-											? "border-[#EA1919] bg-[#FAF2F3]"
-											: "border-[#14D81C] bg-[#F8FFF8]",
-									"radius-xl my-2 h-11 w-full rounded-xl border-2 border-[#E4E3EB] bg-[#FCFCFD] p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+										: !errors.email
+											? "border-[#14D81C] bg-[#F8FFF8]"
+											: responseStatus && responseStatus.code === 422
+												? "border-[#EA1919] bg-[#FAF2F3]"
+												: "border-[#E4E3EB] bg-[#FCFCFD]",
+									"radius-xl my-2 h-11 w-full rounded-xl border-2 p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
 								)}
 							/>
 							{errors.email && (
