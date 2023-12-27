@@ -42,7 +42,7 @@ export default function LoginForm({ closeHandler }) {
 	const {
 		register,
 		setFocus,
-		formState: { errors, isValid, isValidating },
+		formState: { errors, isValid, isValidating, dirtyFields },
 	} = useForm({
 		resolver: yupResolver(LoginSchema),
 		mode: "onChange",
@@ -71,8 +71,8 @@ export default function LoginForm({ closeHandler }) {
 				if (responseStatus) {
 					responseStatus.code = "";
 					responseStatus.message = "";
-					closeHandler();
 				}
+				closeHandler();
 			}}
 		>
 			{responseStatus && responseStatus.code === 204 ? (
@@ -83,13 +83,7 @@ export default function LoginForm({ closeHandler }) {
 					</div>
 					<button
 						className="mt-12 h-11 w-full rounded-lg bg-[#5D37F3] text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]"
-						onClick={() => {
-							if (responseStatus) {
-								responseStatus.code = "";
-								responseStatus.message = "";
-								closeHandler();
-							}
-						}}
+						onClick={closeHandler}
 					>
 						კარგი
 					</button>
@@ -119,7 +113,7 @@ export default function LoginForm({ closeHandler }) {
 										? "border-[#EA1919] bg-[#FAF2F3]"
 										: responseStatus && responseStatus.code === 422
 											? "border-[#EA1919] bg-[#FAF2F3]"
-											: !errors.email
+											: !errors.email && dirtyFields.email
 												? "border-[#14D81C] bg-[#F8FFF8]"
 												: "border-[#E4E3EB] bg-[#FCFCFD]",
 									"radius-xl my-2 h-11 w-full rounded-xl border-2 p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
