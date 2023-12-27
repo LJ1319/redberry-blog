@@ -60,7 +60,9 @@ export default function BlogDetails() {
 							<span>•</span>
 							<p>{blog.email}</p>
 						</div>
-						<p className="my-6 text-xl font-medium">{blog.title}</p>
+						<p className="my-6 text-[32px] font-bold leading-10">
+							{blog.title}
+						</p>
 						<div className="flex flex-wrap gap-4">
 							{blog.categories.map((category) => (
 								<div

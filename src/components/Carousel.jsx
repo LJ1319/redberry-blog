@@ -32,7 +32,7 @@ export default function Carousel({ title, similarBlogs }) {
 	return (
 		<div className="my-24 space-y-10">
 			<div className="flex justify-between">
-				<p className="text-3xl font-bold">{title}</p>
+				<p className="text-[32px] font-bold leading-10">{title}</p>
 				<div className="flex gap-6">
 					<button
 						className={classNames(

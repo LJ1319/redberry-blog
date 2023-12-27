@@ -1,7 +1,6 @@
 export function getPublishedBlogs(blogs) {
-	return blogs
-		.filter((blog) => Date.now() > Date.parse(blog.publish_date))
-		.sort((a, b) => Date.parse(a.publish_date) - Date.parse(b.publish_date));
+	return blogs.filter((blog) => Date.now() > Date.parse(blog.publish_date));
+	// .sort((a, b) => Date.parse(b.publish_date) - Date.parse(a.publish_date));
 }
 
 export function filterBlogsByCategories(blogs, categories) {
@@ -48,12 +47,12 @@ export function formatDate(publishDate) {
 	return new Date(publishDate).toLocaleDateString("en-GB").replaceAll("/", ".");
 }
 
-export function extractExcerpt(description) {
-	const numOfWords = description.split(" ").length;
+export function extractExcerpt(text) {
+	const numOfWords = text.split(" ").length;
 
 	return numOfWords > 15
-		? description.split(" ").slice(0, 15).join(" ") + "..."
-		: description;
+		? text.split(" ").slice(0, 15).join(" ") + "..."
+		: text;
 }
 
 export function classNames(...classes) {

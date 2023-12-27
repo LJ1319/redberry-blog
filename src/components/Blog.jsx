@@ -9,7 +9,7 @@ export default function Blog({ blog }) {
 			<img
 				src={blog.image}
 				alt={blog.description}
-				className="h-80 w-full rounded-xl"
+				className="h-96 w-full rounded-xl"
 			/>
 			<div className="mt-6 space-y-4">
 				<div>
@@ -18,7 +18,7 @@ export default function Blog({ blog }) {
 						{formatDate(blog.publish_date)}
 					</p>
 				</div>
-				<p className="text-xl	font-medium">{blog.title}</p>
+				<p className="text-xl font-bold">{extractExcerpt(blog.title)}</p>
 				<div className="flex flex-wrap gap-4">
 					{blog.categories.map((category) => (
 						<div
@@ -35,7 +35,10 @@ export default function Blog({ blog }) {
 				</div>
 				<p>{extractExcerpt(blog.description)}</p>
 				<div className="text-sm font-medium text-[#5D37F3]">
-					<Link to={`/blogs/${blog.id}`} className="flex items-center gap-1">
+					<Link
+						to={`/blogs/${blog.id}`}
+						className="flex w-max items-center gap-1"
+					>
 						სრულად ნახვა
 						<img src={ArrowIcon} alt="Arrow Icon" />
 					</Link>
