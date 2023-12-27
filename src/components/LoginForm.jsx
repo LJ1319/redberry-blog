@@ -42,7 +42,7 @@ export default function LoginForm({ closeHandler }) {
 	const {
 		register,
 		setFocus,
-		formState: { errors },
+		formState: { errors, isValid, isValidating },
 	} = useForm({
 		resolver: yupResolver(LoginSchema),
 		mode: "onChange",
@@ -58,8 +58,23 @@ export default function LoginForm({ closeHandler }) {
 		}
 	}, [responseStatus, setIsAuthorized]);
 
+	useEffect(() => {
+		if (responseStatus && isValidating) {
+			responseStatus.code = "";
+			responseStatus.message = "";
+		}
+	}, [responseStatus, isValidating]);
+
 	return (
-		<Modal closeHandler={closeHandler}>
+		<Modal
+			closeHandler={() => {
+				if (responseStatus) {
+					responseStatus.code = "";
+					responseStatus.message = "";
+					closeHandler();
+				}
+			}}
+		>
 			{responseStatus && responseStatus.code === 204 ? (
 				<div className="pt-8">
 					<div className="flex flex-col items-center gap-4">
@@ -68,7 +83,13 @@ export default function LoginForm({ closeHandler }) {
 					</div>
 					<button
 						className="mt-12 h-11 w-full rounded-lg bg-[#5D37F3] text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]"
-						onClick={closeHandler}
+						onClick={() => {
+							if (responseStatus) {
+								responseStatus.code = "";
+								responseStatus.message = "";
+								closeHandler();
+							}
+						}}
 					>
 						კარგი
 					</button>
@@ -79,7 +100,7 @@ export default function LoginForm({ closeHandler }) {
 					<Form
 						method="post"
 						onSubmit={(event) => {
-							if (errors.email) {
+							if (!isValid) {
 								event.preventDefault();
 							}
 						}}
@@ -96,10 +117,10 @@ export default function LoginForm({ closeHandler }) {
 								className={classNames(
 									errors.email
 										? "border-[#EA1919] bg-[#FAF2F3]"
-										: !errors.email
-											? "border-[#14D81C] bg-[#F8FFF8]"
-											: responseStatus && responseStatus.code === 422
-												? "border-[#EA1919] bg-[#FAF2F3]"
+										: responseStatus && responseStatus.code === 422
+											? "border-[#EA1919] bg-[#FAF2F3]"
+											: !errors.email
+												? "border-[#14D81C] bg-[#F8FFF8]"
 												: "border-[#E4E3EB] bg-[#FCFCFD]",
 									"radius-xl my-2 h-11 w-full rounded-xl border-2 p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
 								)}
