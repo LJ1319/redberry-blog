@@ -2,11 +2,12 @@ import BackIcon from "../../public/images/BackIcon.svg";
 import AddFileIcon from "../../public/images/AddFileIcon.svg";
 import ImageIcon from "../../public/images/ImageIcon.svg";
 import CloseIcon from "../../public/images/CloseIcon.svg";
+import InfoIcon from "../../public/images/InfoIcon.svg";
 
 import { useForm } from "react-hook-form";
 
 import { classNames } from "@/helpers.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocalStorageState } from "@/hooks/useLocalStorage.js";
 import { Form, Link } from "react-router-dom";
 
@@ -15,6 +16,8 @@ export default function Create() {
 		key: "imageName",
 		value: "",
 	});
+
+	const [imageError, setImageError] = useState(false);
 
 	const [formValues, setFormValues] = useLocalStorageState({
 		key: "Blog",
@@ -43,11 +46,19 @@ export default function Create() {
 	const {
 		register,
 		formState: { isValid },
-	} = useForm({ defaultValues: formValues });
+	} = useForm({ defaultValues: formValues, mode: "onChange" });
 
 	function imageUploadHandler(event) {
 		let reader = new FileReader();
 		let file = event.target.files[0];
+
+		let pattern = /image-*/;
+		if (file && !file.type.match(pattern)) {
+			setImageError(true);
+			return;
+		}
+
+		setImageError(false);
 		reader.addEventListener("load", () => {
 			setImageName(file.name);
 			setFormValues({
@@ -94,9 +105,16 @@ export default function Create() {
 										</button>
 									</div>
 								) : (
-									<div className="relative h-52 w-full rounded-xl border border-dashed border-[#85858D] bg-[#F4F3FF]">
+									<div
+										className={classNames(
+											imageError
+												? "border-[#EA1919] bg-[#FAF2F3]"
+												: "border-[#85858D] bg-[#F4F3FF]",
+											"relative h-52 w-full rounded-xl border border-dashed ",
+										)}
+									>
 										<label
-											className="flex h-full w-full flex-col items-center justify-center gap-y-6 py-12"
+											className="my-2 flex h-full w-full flex-col items-center justify-center gap-y-6 py-12"
 											htmlFor="image"
 										>
 											<img src={AddFileIcon} alt="Add File Icon" />
@@ -109,11 +127,19 @@ export default function Create() {
 										</label>
 										<input
 											type="file"
-											className="absolute top-0 h-full w-full opacity-0"
+											className="absolute top-0 h-full w-full cursor-pointer opacity-0"
 											id="image"
 											accept="image/*"
 											onChange={imageUploadHandler}
 										/>
+										{imageError && (
+											<div className="flex h-5 items-center gap-2">
+												<img src={InfoIcon} alt="Info Icon" />
+												<p className="text-xs text-[#EA1919]">
+													არასწორი ფორმატი
+												</p>
+											</div>
+										)}
 									</div>
 								)}
 							</div>
