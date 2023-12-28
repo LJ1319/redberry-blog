@@ -4,8 +4,11 @@ import NextIcon from "../../public/images/NextIcon.svg";
 import { useEffect, useState } from "react";
 import Blog from "@/components/Blog.jsx";
 import { classNames } from "@/helpers.js";
+import { useLocation } from "react-router-dom";
 
 export default function Carousel({ title, similarBlogs }) {
+	const location = useLocation();
+
 	const [index, setIndex] = useState(0);
 	const [isPrevDisabled, setIsPrevDisabled] = useState(true);
 	const [isNextDisabled, setIsNextDisabled] = useState(false);
@@ -17,7 +20,7 @@ export default function Carousel({ title, similarBlogs }) {
 	}
 
 	function nextClickHandler() {
-		if (index !== similarBlogs.length - 3) {
+		if (index < similarBlogs.length - 3) {
 			setIndex((prevState) => prevState + 1);
 		}
 	}
@@ -36,6 +39,17 @@ export default function Carousel({ title, similarBlogs }) {
 		}
 	}, [index, similarBlogs]);
 
+	useEffect(() => {
+		if (similarBlogs.length === 0) {
+			setIsPrevDisabled(true);
+			setIsNextDisabled(true);
+		}
+	}, [similarBlogs]);
+
+	useEffect(() => {
+		setIndex(0);
+	}, [location]);
+
 	return (
 		<div className="my-24 space-y-10">
 			<div className="flex justify-between">
@@ -43,11 +57,10 @@ export default function Carousel({ title, similarBlogs }) {
 				<div className="flex gap-6">
 					<button
 						className={classNames(
-							similarBlogs.length === 0 &&
-								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
-							isPrevDisabled &&
-								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
-							"flex h-11 w-11 items-center justify-center rounded-full bg-[#5D37F3] outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]",
+							isPrevDisabled
+								? "bg-[#E4E3EB] hover:bg-[#E4E3EB] focus:bg-[#E4E3EB]"
+								: "bg-[#5D37F3] hover:bg-[#512BE7] focus:bg-[#512BE7]",
+							"flex h-11 w-11 items-center justify-center rounded-full  outline-none ",
 						)}
 						onClick={prevClickHandler}
 					>
@@ -55,11 +68,10 @@ export default function Carousel({ title, similarBlogs }) {
 					</button>
 					<button
 						className={classNames(
-							similarBlogs.length === 0 &&
-								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
-							isNextDisabled &&
-								"bg-[#E4E3EB] hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]",
-							"flex h-11 w-11 items-center justify-center rounded-full bg-[#5D37F3] outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]",
+							isNextDisabled
+								? "bg-[#E4E3EB] hover:bg-[#E4E3EB] focus:bg-[#E4E3EB]"
+								: "bg-[#5D37F3] hover:bg-[#512BE7] focus:bg-[#512BE7]",
+							"flex h-11 w-11 items-center justify-center rounded-full  outline-none ",
 						)}
 						onClick={nextClickHandler}
 					>
