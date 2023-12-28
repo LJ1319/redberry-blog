@@ -22,19 +22,21 @@ export function filterBlogsByCategories(blogs, categories) {
 	return filteredBlogs;
 }
 
-export function getSimilarBlogs(blogs, categories) {
+export function getSimilarBlogs(blogId, blogs, categories) {
 	const similarBlogs = new Set();
 
-	if (blogs && categories) {
+	if (blogId && blogs && categories) {
 		// console.log(blogs);
 		// console.log(categories);
 		blogs.forEach((blog) => {
-			for (const element of blog.categories) {
-				categories.forEach((category) => {
-					if (category.title === Object.values(element)[1]) {
-						similarBlogs.add(blog);
-					}
-				});
+			if (blog.id !== +blogId) {
+				for (const element of blog.categories) {
+					categories.forEach((category) => {
+						if (category.title === Object.values(element)[1]) {
+							similarBlogs.add(blog);
+						}
+					});
+				}
 			}
 		});
 	}

@@ -28,7 +28,7 @@ export async function loader({ params }) {
 	}
 
 	const publishedBlogs = getPublishedBlogs(blogs);
-	const similarBlogs = getSimilarBlogs(publishedBlogs, blog.categories);
+	const similarBlogs = getSimilarBlogs(id, publishedBlogs, blog.categories);
 
 	return { blog, similarBlogs };
 }

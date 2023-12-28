@@ -60,7 +60,7 @@ export default function Carousel({ title, similarBlogs }) {
 							isPrevDisabled
 								? "bg-[#E4E3EB] hover:bg-[#E4E3EB] focus:bg-[#E4E3EB]"
 								: "bg-[#5D37F3] hover:bg-[#512BE7] focus:bg-[#512BE7]",
-							"flex h-11 w-11 items-center justify-center rounded-full  outline-none ",
+							"flex h-11 w-11 items-center justify-center rounded-full outline-none",
 						)}
 						onClick={prevClickHandler}
 					>
@@ -71,7 +71,7 @@ export default function Carousel({ title, similarBlogs }) {
 							isNextDisabled
 								? "bg-[#E4E3EB] hover:bg-[#E4E3EB] focus:bg-[#E4E3EB]"
 								: "bg-[#5D37F3] hover:bg-[#512BE7] focus:bg-[#512BE7]",
-							"flex h-11 w-11 items-center justify-center rounded-full  outline-none ",
+							"flex h-11 w-11 items-center justify-center rounded-full outline-none",
 						)}
 						onClick={nextClickHandler}
 					>
