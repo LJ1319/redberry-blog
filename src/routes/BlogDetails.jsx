@@ -42,7 +42,7 @@ export default function BlogDetails() {
 				<div className="w-1/4">
 					<Link
 						to="/"
-						className="flex h-11 w-11 items-center justify-center rounded-full bg-white"
+						className="flex h-11 w-11 items-center justify-center rounded-full bg-white outline-none hover:bg-[#D9D8E0] focus:bg-[#D9D8E0]"
 					>
 						<img src={BackIcon} alt="Back Icon" />
 					</Link>

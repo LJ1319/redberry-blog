@@ -26,6 +26,7 @@ export function getSimilarBlogs(blogId, blogs, categories) {
 	const similarBlogs = new Set();
 
 	if (blogId && blogs && categories) {
+		// console.log(blogId);
 		// console.log(blogs);
 		// console.log(categories);
 		blogs.forEach((blog) => {

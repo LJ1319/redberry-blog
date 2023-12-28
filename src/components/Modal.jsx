@@ -11,7 +11,7 @@ export default function Modal({ closeHandler, children }) {
 				onClick={(e) => e.stopPropagation()}
 			>
 				<button
-					className="absolute right-3 top-3 h-10 w-10 rounded-full px-2 outline-none hover:bg-[#F5F4F9] focus:bg-[#F5F4F9]"
+					className="absolute right-3 top-3 h-10 w-10 rounded-full px-2 outline-none hover:bg-[#F5F4F9] focus:bg-[#EBEAEF]"
 					onClick={closeHandler}
 				>
 					<img src={CloseIcon} alt="Close Icon" />
