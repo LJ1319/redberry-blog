@@ -47,7 +47,7 @@ export default function BlogDetails() {
 						<img src={BackIcon} alt="Back Icon" />
 					</Link>
 				</div>
-				<div className="mx-11 w-1/2">
+				<div className="w-1/2">
 					<img
 						src={blog.image}
 						alt={blog.description}
