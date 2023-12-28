@@ -65,6 +65,12 @@ export default function LoginForm({ closeHandler }) {
 		}
 	}, [responseStatus, isValidating]);
 
+	function formSubmitHandler(event) {
+		if (!isValid) {
+			event.preventDefault();
+		}
+	}
+
 	return (
 		<Modal
 			closeHandler={() => {
@@ -91,14 +97,7 @@ export default function LoginForm({ closeHandler }) {
 			) : (
 				<>
 					<p className="my-6 text-center text-2xl font-bold">შესვლა</p>
-					<Form
-						method="post"
-						onSubmit={(event) => {
-							if (!isValid) {
-								event.preventDefault();
-							}
-						}}
-					>
+					<Form method="post">
 						<label htmlFor="email" className="text-sm font-medium">
 							ელ-ფოსტა
 						</label>
@@ -136,7 +135,10 @@ export default function LoginForm({ closeHandler }) {
 								</p>
 							</div>
 						)}
-						<button className="mt-6 h-11 w-full rounded-lg bg-[#5D37F3] p-1 text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]">
+						<button
+							className="mt-6 h-11 w-full rounded-lg bg-[#5D37F3] p-1 text-white outline-none hover:bg-[#512BE7] focus:bg-[#512BE7]"
+							onClick={formSubmitHandler}
+						>
 							შესვლა
 						</button>
 					</Form>
