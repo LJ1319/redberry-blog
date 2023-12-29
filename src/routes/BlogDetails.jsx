@@ -1,12 +1,7 @@
 import BackIcon from "../../public/images/BackIcon.svg";
 
 import axios from "axios";
-import {
-	formatDate,
-	formatTextarea,
-	getPublishedBlogs,
-	getSimilarBlogs,
-} from "@/helpers.js";
+import { formatDate, getPublishedBlogs, getSimilarBlogs } from "@/helpers.js";
 import { Link, useLoaderData } from "react-router-dom";
 import Carousel from "@/components/Carousel.jsx";
 
