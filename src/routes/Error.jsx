@@ -2,7 +2,6 @@ import { useRouteError } from "react-router-dom";
 
 export default function Error() {
 	const error = useRouteError();
-	console.error(error);
 
 	return (
 		<div className="font-noto flex h-96 w-full flex-col items-center justify-center gap-3 text-gray-800">

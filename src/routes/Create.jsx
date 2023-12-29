@@ -61,7 +61,6 @@ export async function action({ request }) {
 	} catch (error) {
 		responseStatus.code = error.response.status;
 		responseStatus.message = error.response.message;
-		console.error(error);
 	}
 
 	return responseStatus;

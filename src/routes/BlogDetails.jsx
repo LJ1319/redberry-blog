@@ -1,7 +1,12 @@
 import BackIcon from "../../public/images/BackIcon.svg";
 
 import axios from "axios";
-import { formatDate, getPublishedBlogs, getSimilarBlogs } from "@/helpers.js";
+import {
+	formatDate,
+	formatTextarea,
+	getPublishedBlogs,
+	getSimilarBlogs,
+} from "@/helpers.js";
 import { Link, useLoaderData } from "react-router-dom";
 import Carousel from "@/components/Carousel.jsx";
 
@@ -77,7 +82,9 @@ export default function BlogDetails() {
 								</div>
 							))}
 						</div>
-						<p className="mt-10 text-[#404049]">{blog.description}</p>
+						<p className="mt-10 whitespace-pre-line text-[#404049]">
+							{blog.description}
+						</p>
 					</div>
 				</div>
 			</div>

@@ -15,7 +15,6 @@ import { Form, useActionData } from "react-router-dom";
 export async function action({ request }) {
 	const formData = await request.formData();
 	const postData = Object.fromEntries(formData);
-	// console.log(postData);
 
 	let responseStatus = {
 		code: "",
@@ -29,7 +28,6 @@ export async function action({ request }) {
 	} catch (error) {
 		responseStatus.code = error.response.status;
 		responseStatus.message = "ელ-ფოსტა ვერ მოიძებნა";
-		console.error(error);
 	}
 
 	return responseStatus;

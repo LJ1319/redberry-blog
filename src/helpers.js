@@ -7,8 +7,6 @@ export function filterBlogsByCategories(blogs, categories) {
 	const filteredBlogs = new Set();
 
 	if (blogs && categories) {
-		// console.log(blogs);
-		// console.log(categories);
 		blogs.forEach((blog) => {
 			for (const element of blog.categories) {
 				if (categories.includes(Object.values(element)[1])) {
@@ -17,8 +15,6 @@ export function filterBlogsByCategories(blogs, categories) {
 			}
 		});
 	}
-
-	// console.log(filteredBlogs);
 	return filteredBlogs;
 }
 
@@ -26,9 +22,6 @@ export function getSimilarBlogs(blogId, blogs, categories) {
 	const similarBlogs = new Set();
 
 	if (blogId && blogs && categories) {
-		// console.log(blogId);
-		// console.log(blogs);
-		// console.log(categories);
 		blogs.forEach((blog) => {
 			if (blog.id !== +blogId) {
 				for (const element of blog.categories) {
@@ -42,7 +35,6 @@ export function getSimilarBlogs(blogId, blogs, categories) {
 		});
 	}
 
-	// console.log(similarBlogs);
 	return similarBlogs;
 }
 

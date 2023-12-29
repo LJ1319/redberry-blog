@@ -33,10 +33,6 @@ export async function loader() {
 
 	const publishedBlogs = getPublishedBlogs(blogs);
 
-	// console.log(categories);
-	// console.log(blogs);
-	// console.log(publishedBlogs);
-
 	return { categories, publishedBlogs };
 }
 
@@ -60,7 +56,6 @@ export default function Blogs() {
 							.filter((item) => item !== category)
 							.toString(),
 					);
-					// console.log([...prev.values()], "removed");
 				} else {
 					prev.set(
 						"selectedCategories",
@@ -68,7 +63,6 @@ export default function Blogs() {
 							.filter((item) => item !== "")
 							.toString(),
 					);
-					// console.log([...prev.values()], "added");
 				}
 
 				return prev;
@@ -78,7 +72,6 @@ export default function Blogs() {
 	}
 
 	useEffect(() => {
-		console.log(publishedBlogs);
 		setFilteredBlogs([
 			...filterBlogsByCategories(publishedBlogs, selectedCategories),
 		]);
