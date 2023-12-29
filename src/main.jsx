@@ -20,7 +20,10 @@ import BlogDetails, {
 	loader as blogDetailsLoader,
 } from "@/routes/BlogDetails.jsx";
 import Protected from "@/routes/Protected.jsx";
-import Create from "@/routes/Create.jsx";
+import Create, {
+	loader as createLoader,
+	action as createAction,
+} from "@/routes/Create.jsx";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -44,6 +47,8 @@ const router = createBrowserRouter(
 						<Create />
 						// </Protected>
 					}
+					loader={createLoader}
+					action={createAction}
 				/>
 			</Route>
 		</Route>,

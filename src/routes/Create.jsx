@@ -8,29 +8,71 @@ import InfoIcon from "../../public/images/InfoIcon.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BlogSchema } from "@/schemas/schemas.js";
+import useFormPersist from "react-hook-form-persist";
 
+import axios from "axios";
 import { classNames } from "@/helpers.js";
 import { useEffect, useState } from "react";
 import { useLocalStorageState } from "@/hooks/useLocalStorage.js";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useActionData, useLoaderData } from "react-router-dom";
 
-const initialValues = {
-	author: "",
-	title: "",
-	description: "",
-	publish_date: "",
-	categories: [
-		{
-			id: "",
-			name: "",
-			text_color: "",
-			background_color: "",
-		},
-	],
-	image: "",
-};
+export async function loader() {
+	const categoriesResponse = await axios("/categories");
+	const categories = categoriesResponse.data.data;
+
+	if (!categories) {
+		throw new Response("", {
+			status: 404,
+			statusText: "Categories Not Found",
+		});
+	}
+
+	return categories;
+}
+
+export async function action({ request }) {
+	const formData = await request.formData();
+	const postData = Object.fromEntries(formData);
+
+	const multipartData = JSON.parse(localStorage.getItem("multipartData"));
+	const blob = await fetch(multipartData.image).then((res) => res.blob());
+
+	const finalData = {
+		...postData,
+		...multipartData.categories,
+		image: blob,
+	};
+
+	let responseStatus = {
+		code: "",
+		message: "",
+	};
+
+	try {
+		const resp = await axios.post("/blogs", finalData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+		responseStatus.code = resp.status;
+		responseStatus.message = "ჩანაწერლი წარმატებით დაემატა";
+
+		localStorage.removeItem("imageName");
+		localStorage.removeItem("multi");
+		localStorage.removeItem("form");
+	} catch (error) {
+		responseStatus.code = error.response.status;
+		responseStatus.message = error.response.message;
+		console.error(error);
+	}
+
+	return responseStatus;
+}
 
 export default function Create() {
+	const categories = useLoaderData();
+	const responseStatus = useActionData();
+
 	const [imageName, setImageName] = useLocalStorageState({
 		key: "imageName",
 		value: "",
@@ -38,18 +80,28 @@ export default function Create() {
 
 	const [imageError, setImageError] = useState(false);
 
-	const [formValues, setFormValues] = useLocalStorageState({
-		key: "Blog",
-		value: initialValues,
+	const [multipartData, setMultipartData] = useLocalStorageState({
+		key: "multipartData",
+		value: {
+			categories: [],
+			image: "",
+		},
 	});
 
 	const {
 		register,
-		getValues,
+		watch,
+		setValue,
 		formState: { errors, isValid, dirtyFields },
 	} = useForm({
 		mode: "onChange",
 		resolver: yupResolver(BlogSchema),
+	});
+
+	useFormPersist("form", {
+		watch,
+		setValue,
+		storage: window.localStorage,
 	});
 
 	function imageUploadHandler(event) {
@@ -65,21 +117,38 @@ export default function Create() {
 		setImageError(false);
 		reader.addEventListener("load", () => {
 			setImageName(file.name);
-			setFormValues({
-				...formValues,
+			setMultipartData({
+				...multipartData,
 				image: reader.result,
 			});
 		});
 		reader.readAsDataURL(file);
 	}
 
+	function formSubmitHandler(event) {
+		if (
+			!isValid ||
+			!multipartData.image ||
+			multipartData.categories.length === 0
+		) {
+			event.preventDefault();
+		}
+	}
+
 	useEffect(() => {
-		const values = getValues();
-		console.log(values);
-	}, [getValues]);
+		if (categories) {
+			console.log(categories);
+		}
+	}, [categories]);
+
+	useEffect(() => {
+		if (responseStatus) {
+			console.log(responseStatus);
+		}
+	});
 
 	return (
-		<div className="m-auto w-11/12 py-5">
+		<div className="m-auto w-11/12 py-10">
 			<div className="flex justify-start">
 				<div className="w-1/4">
 					<Link
@@ -91,11 +160,11 @@ export default function Create() {
 				</div>
 				<div className="w-2/5">
 					<h1 className="text-[32px] font-bold leading-10">ბლოგის დამატება</h1>
-					<Form>
+					<Form method="post">
 						<div className="my-10 space-y-6">
 							<div>
 								<p className="my-2 text-sm font-medium">ატვირთეთ ფოტო</p>
-								{formValues.image ? (
+								{multipartData.image ? (
 									<div className="flex h-16 items-center justify-between rounded-xl bg-[#F2F2FA] px-4">
 										<div className="flex gap-3">
 											<img src={ImageIcon} alt="Image Icon" />
@@ -104,8 +173,8 @@ export default function Create() {
 										<button
 											className="h-10 w-10 rounded-full px-2"
 											onClick={() => {
-												setFormValues({
-													...formValues,
+												setMultipartData({
+													...multipartData,
 													image: "",
 												});
 												setImageName("");
@@ -328,11 +397,14 @@ export default function Create() {
 						<div className="flex justify-end">
 							<button
 								className={classNames(
-									!isValid
+									!isValid ||
+										!multipartData.image ||
+										multipartData.categories.length === 0
 										? "bg-[#E4E3EB]"
 										: "bg-[#5D37F3] hover:bg-[#512BE7] focus:bg-[#4721DD]",
 									"h-10 w-72 rounded-lg text-sm font-medium text-white outline-none",
 								)}
+								onClick={formSubmitHandler}
 							>
 								გამოქვეყნება
 							</button>
