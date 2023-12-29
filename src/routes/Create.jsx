@@ -3,6 +3,7 @@ import AddFileIcon from "../../public/images/AddFileIcon.svg";
 import ImageIcon from "../../public/images/ImageIcon.svg";
 import CloseIcon from "../../public/images/CloseIcon.svg";
 import ArrowDownIcon from "../../public/images/ArrowDownIcon.svg";
+import RemoveIcon from "../../public/images/RemoveIcon.svg";
 import InfoIcon from "../../public/images/InfoIcon.svg";
 
 import { useForm } from "react-hook-form";
@@ -35,11 +36,12 @@ export async function action({ request }) {
 	const postData = Object.fromEntries(formData);
 
 	const multipartData = JSON.parse(localStorage.getItem("multipartData"));
-	const blob = await fetch(multipartData.image).then((res) => res.blob());
+	const blob = await fetch(multipartData?.image).then((res) => res.blob());
+	const categories = multipartData.categories.map((category) => category.id);
 
 	const finalData = {
 		...postData,
-		...multipartData.categories,
+		categories: categories,
 		image: blob,
 	};
 
@@ -55,11 +57,7 @@ export async function action({ request }) {
 			},
 		});
 		responseStatus.code = resp.status;
-		responseStatus.message = "ჩანაწერლი წარმატებით დაემატა";
-
-		localStorage.removeItem("imageName");
-		localStorage.removeItem("multi");
-		localStorage.removeItem("form");
+		responseStatus.message = "ჩანაწერი წარმატებით დაემატა";
 	} catch (error) {
 		responseStatus.code = error.response.status;
 		responseStatus.message = error.response.message;
@@ -88,6 +86,9 @@ export default function Create() {
 		},
 	});
 
+	const [open, setOpen] = useState(false);
+	const [isFocused, setIsFocused] = useState(false);
+
 	const {
 		register,
 		watch,
@@ -98,7 +99,7 @@ export default function Create() {
 		resolver: yupResolver(BlogSchema),
 	});
 
-	useFormPersist("form", {
+	const formPersist = useFormPersist("form", {
 		watch,
 		setValue,
 		storage: window.localStorage,
@@ -136,16 +137,12 @@ export default function Create() {
 	}
 
 	useEffect(() => {
-		if (categories) {
-			console.log(categories);
+		if (responseStatus && responseStatus.code === 204) {
+			formPersist.clear();
+			localStorage.removeItem("multipartData");
+			localStorage.removeItem("imageName");
 		}
-	}, [categories]);
-
-	useEffect(() => {
-		if (responseStatus) {
-			console.log(responseStatus);
-		}
-	});
+	}, [formPersist, responseStatus]);
 
 	return (
 		<div className="m-auto w-11/12 py-10">
@@ -163,7 +160,7 @@ export default function Create() {
 					<Form method="post">
 						<div className="my-10 space-y-6">
 							<div>
-								<p className="my-2 text-sm font-medium">ატვირთეთ ფოტო</p>
+								<p className="my-2 w-max text-sm font-medium">ატვირთეთ ფოტო</p>
 								{multipartData.image ? (
 									<div className="flex h-16 items-center justify-between rounded-xl bg-[#F2F2FA] px-4">
 										<div className="flex gap-3">
@@ -177,7 +174,6 @@ export default function Create() {
 													...multipartData,
 													image: "",
 												});
-												setImageName("");
 											}}
 										>
 											<img src={CloseIcon} alt="Remove Icon" />
@@ -194,8 +190,8 @@ export default function Create() {
 											)}
 										>
 											<label
-												className="my-2 flex h-full w-full flex-col items-center justify-center gap-y-6 py-12"
 												htmlFor="image"
+												className="my-2 flex h-full w-full flex-col items-center justify-center gap-y-6 py-12"
 											>
 												<img src={AddFileIcon} alt="Add File Icon" />
 												<span className="text-sm">
@@ -226,7 +222,7 @@ export default function Create() {
 							</div>
 							<div className="flex justify-between gap-6">
 								<div className="flex w-full flex-col">
-									<label htmlFor="author" className="text-sm font-medium">
+									<label htmlFor="author" className="w-max text-sm font-medium">
 										ავტორი *
 									</label>
 									<input
@@ -280,7 +276,7 @@ export default function Create() {
 									</ul>
 								</div>
 								<div className="flex w-full flex-col">
-									<label htmlFor="title" className="text-sm font-medium">
+									<label htmlFor="title" className="w-max text-sm font-medium">
 										სათური *
 									</label>
 									<input
@@ -312,7 +308,10 @@ export default function Create() {
 								</div>
 							</div>
 							<div className="flex w-full flex-col">
-								<label htmlFor="description" className="text-sm font-medium">
+								<label
+									htmlFor="description"
+									className="w-max text-sm font-medium"
+								>
 									აღწერა *
 								</label>
 								<textarea
@@ -346,7 +345,10 @@ export default function Create() {
 							</div>
 							<div className="flex justify-between gap-6">
 								<div className="flex w-full flex-col">
-									<label htmlFor="publish_date" className="text-sm font-medium">
+									<label
+										htmlFor="publish_date"
+										className="w-max text-sm font-medium"
+									>
 										გამოქვეყნების თარიღი *
 									</label>
 									<input
@@ -362,30 +364,110 @@ export default function Create() {
 									/>
 								</div>
 								<div className="flex w-full flex-col">
-									<p className="text-sm font-medium">კატეგორია *</p>
-									<div className="my-2 flex h-11 w-full items-center justify-between rounded-xl border bg-[#FCFCFD] px-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]">
-										<img src={ArrowDownIcon} alt="Arrow Down Icon" />
+									<p className="w-max text-sm font-medium">კატეგორია *</p>
+									<div
+										className={classNames(
+											isFocused
+												? "border-[#5D37F3] bg-[#F7F7FF]"
+												: multipartData?.categories.length > 0
+													? "border-[#14D81C] bg-[#F8FFF8]"
+													: "border-[#E4E3EB] bg-[#FCFCFD]",
+											"relative my-2 flex h-11 w-full items-center justify-between gap-2 rounded-xl border px-2 text-sm",
+										)}
+									>
+										{multipartData?.categories.length > 0 ? (
+											<div className="flex w-72	gap-2 overflow-clip">
+												{multipartData.categories.map((category) => (
+													<div
+														key={category.id}
+														style={{
+															color: category.text_color,
+															backgroundColor: category.background_color,
+														}}
+														className="flex h-8 flex-shrink-0 cursor-pointer gap-2 rounded-full p-2 text-xs font-medium"
+														onClick={() =>
+															setMultipartData({
+																...multipartData,
+																categories: [
+																	...multipartData.categories.filter(
+																		(item) => item.id !== category.id,
+																	),
+																],
+															})
+														}
+													>
+														{category.title}
+														<img src={RemoveIcon} alt="Remove Icon" />
+													</div>
+												))}
+											</div>
+										) : (
+											<span className="text-sm text-[#85858D]">
+												აირჩიეთ კატეგორია
+											</span>
+										)}
+										<button
+											type="button"
+											onClick={() => {
+												setOpen((prevState) => !prevState);
+												setIsFocused((prevState) => !prevState);
+											}}
+										>
+											<img src={ArrowDownIcon} alt="Arrow Down Icon" />
+										</button>
+										{open && (
+											<div className="absolute right-0 top-12 z-50 flex w-full flex-wrap gap-4 rounded-xl bg-white p-4 drop-shadow-2xl">
+												{categories.map((category) => (
+													<div
+														key={category.id}
+														style={{
+															color: category.text_color,
+															backgroundColor: category.background_color,
+														}}
+														className="h-8 cursor-pointer rounded-full p-2 text-xs font-medium"
+														onClick={() => {
+															if (
+																!multipartData.categories.includes(category)
+															) {
+																setMultipartData({
+																	...multipartData,
+																	categories: [
+																		...multipartData.categories,
+																		category,
+																	],
+																});
+															}
+														}}
+													>
+														{category.title}
+													</div>
+												))}
+											</div>
+										)}
 									</div>
 								</div>
 							</div>
 							<div className="flex w-full flex-col">
-								<label htmlFor="email" className="text-sm font-medium">
+								<label htmlFor="email" className="w-max text-sm font-medium">
 									ელ-ფოსტა
 								</label>
-								<input
-									{...register("email")}
-									type="email"
-									id="email"
-									placeholder="შეიყვანეთ ელ-ფოსტა"
-									className={classNames(
-										errors.email
-											? "border-[#EA1919] bg-[#FAF2F3]"
-											: !errors.email && dirtyFields.email
-												? "border-[#14D81C] bg-[#F8FFF8]"
-												: "border-[#E4E3EB] bg-[#FCFCFD]",
-										"my-2 h-11 w-1/2 rounded-xl border p-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
-									)}
-								/>
+								<div className="flex justify-between gap-6">
+									<input
+										{...register("email")}
+										type="email"
+										id="email"
+										placeholder="შეიყვანეთ ელ-ფოსტა"
+										className={classNames(
+											errors.email
+												? "border-[#EA1919] bg-[#FAF2F3]"
+												: !errors.email && dirtyFields.email
+													? "border-[#14D81C] bg-[#F8FFF8]"
+													: "border-[#E4E3EB] bg-[#FCFCFD]",
+											"my-2 h-11 w-1/2 rounded-xl border p-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+										)}
+									/>
+									<div className="w-1/2"></div>
+								</div>
 								{errors.email && (
 									<div className="flex h-5 items-center gap-2">
 										<img src={InfoIcon} alt="Info Icon" />
@@ -396,7 +478,8 @@ export default function Create() {
 								)}
 							</div>
 						</div>
-						<div className="flex justify-end">
+						<div className="flex justify-between gap-6">
+							<div className="w-1/2"></div>
 							<button
 								className={classNames(
 									!isValid ||
@@ -404,7 +487,7 @@ export default function Create() {
 										multipartData.categories.length === 0
 										? "bg-[#E4E3EB]"
 										: "bg-[#5D37F3] hover:bg-[#512BE7] focus:bg-[#4721DD]",
-									"h-10 w-72 rounded-lg text-sm font-medium text-white outline-none",
+									"h-10 w-1/2 rounded-lg text-sm font-medium text-white outline-none",
 								)}
 								onClick={formSubmitHandler}
 							>

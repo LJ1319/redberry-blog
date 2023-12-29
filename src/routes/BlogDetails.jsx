@@ -77,7 +77,7 @@ export default function BlogDetails() {
 								</div>
 							))}
 						</div>
-						<p className="mt-10">{blog.description}</p>
+						<p className="mt-10 text-[#404049]">{blog.description}</p>
 					</div>
 				</div>
 			</div>

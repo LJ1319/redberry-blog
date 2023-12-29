@@ -43,9 +43,9 @@ const router = createBrowserRouter(
 				<Route
 					path="create"
 					element={
-						// <Protected>
-						<Create />
-						// </Protected>
+						<Protected>
+							<Create />
+						</Protected>
 					}
 					loader={createLoader}
 					action={createAction}

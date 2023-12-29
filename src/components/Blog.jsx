@@ -33,7 +33,7 @@ export default function Blog({ blog }) {
 						</div>
 					))}
 				</div>
-				<p>{extractExcerpt(blog.description)}</p>
+				<p className="text-[#404049]">{extractExcerpt(blog.description)}</p>
 				<div className="text-sm font-medium text-[#5D37F3]">
 					<Link
 						to={`/blogs/${blog.id}`}

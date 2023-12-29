@@ -78,6 +78,7 @@ export default function Blogs() {
 	}
 
 	useEffect(() => {
+		console.log(publishedBlogs);
 		setFilteredBlogs([
 			...filterBlogsByCategories(publishedBlogs, selectedCategories),
 		]);
