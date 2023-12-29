@@ -10,12 +10,19 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BlogSchema } from "@/schemas/schemas.js";
 import useFormPersist from "react-hook-form-persist";
+import SuccessForm from "@/components/SuccessForm.jsx";
 
 import axios from "axios";
 import { classNames } from "@/helpers.js";
 import { useEffect, useState } from "react";
 import { useLocalStorageState } from "@/hooks/useLocalStorage.js";
-import { Form, Link, useActionData, useLoaderData } from "react-router-dom";
+import {
+	Form,
+	Link,
+	useActionData,
+	useLoaderData,
+	useNavigate,
+} from "react-router-dom";
 
 export async function loader() {
 	const categoriesResponse = await axios("/categories");
@@ -59,8 +66,9 @@ export async function action({ request }) {
 		responseStatus.code = resp.status;
 		responseStatus.message = "ჩანაწერი წარმატებით დაემატა";
 	} catch (error) {
-		responseStatus.code = error.response.status;
-		responseStatus.message = error.response.message;
+		console.log(error);
+		responseStatus.code = error.code;
+		responseStatus.message = error.message;
 	}
 
 	return responseStatus;
@@ -69,12 +77,12 @@ export async function action({ request }) {
 export default function Create() {
 	const categories = useLoaderData();
 	const responseStatus = useActionData();
+	const navigate = useNavigate();
 
 	const [imageName, setImageName] = useLocalStorageState({
 		key: "imageName",
 		value: "",
 	});
-
 	const [imageError, setImageError] = useState(false);
 
 	const [multipartData, setMultipartData] = useLocalStorageState({
@@ -87,6 +95,7 @@ export default function Create() {
 
 	const [open, setOpen] = useState(false);
 	const [isFocused, setIsFocused] = useState(false);
+	const [openModal, setOpenModal] = useState(false);
 
 	const {
 		register,
@@ -137,14 +146,31 @@ export default function Create() {
 
 	useEffect(() => {
 		if (responseStatus && responseStatus.code === 204) {
-			formPersist.clear();
+			setOpenModal(true);
 			localStorage.removeItem("multipartData");
 			localStorage.removeItem("imageName");
 		}
+	}, [responseStatus]);
+
+	useEffect(() => {
+		if (responseStatus && responseStatus.code === 204) {
+			formPersist.clear();
+		}
 	}, [formPersist, responseStatus]);
+
+	function closeModalHandler() {
+		setOpenModal(false);
+		navigate("/");
+	}
 
 	return (
 		<div className="m-auto w-11/12 py-10">
+			{openModal && (
+				<SuccessForm
+					responseStatus={responseStatus}
+					closeHandler={closeModalHandler}
+				/>
+			)}
 			<div className="flex justify-start">
 				<div className="w-1/4">
 					<Link
@@ -415,7 +441,7 @@ export default function Create() {
 											<img src={ArrowDownIcon} alt="Arrow Down Icon" />
 										</button>
 										{open && (
-											<div className="absolute right-0 top-12 z-50 flex w-full flex-wrap gap-4 rounded-xl bg-white p-4 drop-shadow-2xl">
+											<div className="absolute right-0 top-12 z-10 flex w-full flex-wrap gap-4 rounded-xl bg-white p-4 drop-shadow-2xl">
 												{categories.map((category) => (
 													<div
 														key={category.id}

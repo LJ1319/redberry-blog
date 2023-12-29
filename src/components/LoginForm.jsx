@@ -26,6 +26,7 @@ export async function action({ request }) {
 		responseStatus.code = resp.status;
 		responseStatus.message = "წარმატებული ავტორიზაცია";
 	} catch (error) {
+		console.log(error);
 		responseStatus.code = error.response.status;
 		responseStatus.message = "ელ-ფოსტა ვერ მოიძებნა";
 	}

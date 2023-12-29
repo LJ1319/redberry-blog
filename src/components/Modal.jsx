@@ -3,7 +3,7 @@ import CloseIcon from "../../public/images/CloseIcon.svg";
 export default function Modal({ closeHandler, children }) {
 	return (
 		<div
-			className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 transition-opacity"
+			className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-75 transition-opacity"
 			onClick={closeHandler}
 		>
 			<div

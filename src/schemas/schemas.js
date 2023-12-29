@@ -36,5 +36,8 @@ export const BlogSchema = yup.object({
 		.email("უნდა იყოს ვალიდური ელ-ფოსტა")
 		.matches(redberryEmailRegex, {
 			message: "უნდა მთავრებოდეს @redberry.ge-ით",
-		}),
+		})
+		.nullable()
+		.transform((curr, orig) => (orig === "" ? null : curr))
+		.notRequired(),
 });
