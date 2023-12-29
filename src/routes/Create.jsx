@@ -2,14 +2,33 @@ import BackIcon from "../../public/images/BackIcon.svg";
 import AddFileIcon from "../../public/images/AddFileIcon.svg";
 import ImageIcon from "../../public/images/ImageIcon.svg";
 import CloseIcon from "../../public/images/CloseIcon.svg";
+import ArrowDownIcon from "../../public/images/ArrowDownIcon.svg";
 import InfoIcon from "../../public/images/InfoIcon.svg";
 
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { BlogSchema } from "@/schemas/schemas.js";
 
 import { classNames } from "@/helpers.js";
 import { useEffect, useState } from "react";
 import { useLocalStorageState } from "@/hooks/useLocalStorage.js";
 import { Form, Link } from "react-router-dom";
+
+const initialValues = {
+	author: "",
+	title: "",
+	description: "",
+	publish_date: "",
+	categories: [
+		{
+			id: "",
+			name: "",
+			text_color: "",
+			background_color: "",
+		},
+	],
+	image: "",
+};
 
 export default function Create() {
 	const [imageName, setImageName] = useLocalStorageState({
@@ -21,32 +40,17 @@ export default function Create() {
 
 	const [formValues, setFormValues] = useLocalStorageState({
 		key: "Blog",
-		value: {
-			id: "",
-			title: "",
-			description: "",
-			image: "",
-			publish_date: "",
-			categories: [
-				{
-					id: "",
-					name: "",
-					text_color: "",
-					background_color: "",
-				},
-			],
-			author: "",
-		},
+		value: initialValues,
 	});
-
-	useEffect(() => {
-		console.log(formValues);
-	}, [formValues]);
 
 	const {
 		register,
-		formState: { isValid },
-	} = useForm({ defaultValues: formValues, mode: "onChange" });
+		getValues,
+		formState: { errors, isValid, dirtyFields },
+	} = useForm({
+		mode: "onChange",
+		resolver: yupResolver(BlogSchema),
+	});
 
 	function imageUploadHandler(event) {
 		let reader = new FileReader();
@@ -69,8 +73,13 @@ export default function Create() {
 		reader.readAsDataURL(file);
 	}
 
+	useEffect(() => {
+		const values = getValues();
+		console.log(values);
+	}, [getValues]);
+
 	return (
-		<div className="m-auto w-11/12 py-10">
+		<div className="m-auto w-11/12 py-5">
 			<div className="flex justify-start">
 				<div className="w-1/4">
 					<Link
@@ -99,6 +108,7 @@ export default function Create() {
 													...formValues,
 													image: "",
 												});
+												setImageName("");
 											}}
 										>
 											<img src={CloseIcon} alt="Remove Icon" />
@@ -140,6 +150,177 @@ export default function Create() {
 												</p>
 											</div>
 										)}
+									</div>
+								)}
+							</div>
+							<div className="flex justify-between gap-6">
+								<div className="flex w-full flex-col">
+									<label htmlFor="author" className="text-sm font-medium">
+										ავტორი *
+									</label>
+									<input
+										{...register("author")}
+										type="text"
+										id="author"
+										placeholder="შეიყვანეთ ავტორი"
+										className={classNames(
+											errors.author
+												? "border-[#EA1919] bg-[#FAF2F3]"
+												: !errors.author && dirtyFields.author
+													? "border-[#14D81C] bg-[#F8FFF8]"
+													: "border-[#E4E3EB] bg-[#FCFCFD]",
+											"my-2 h-11 w-full rounded-xl border px-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+										)}
+									/>
+									<ul className="list-disc px-4 text-xs text-[#85858D]">
+										<li
+											className={classNames(
+												errors.author?.message === "მინიმუმ 4 სიმბოლო"
+													? "text-[#EA1919]"
+													: !errors.author && dirtyFields.author
+														? "text-[#14D81C]"
+														: "",
+											)}
+										>
+											მინიმუმ 4 სიმბოლო
+										</li>
+										<li
+											className={classNames(
+												errors.author?.message === "მინიმუმ ორი სიტყვა"
+													? "text-[#EA1919]"
+													: !errors.author && dirtyFields.author
+														? "text-[#14D81C]"
+														: "",
+											)}
+										>
+											მინიმუმ ორი სიტყვა
+										</li>
+										<li
+											className={classNames(
+												errors.author?.message === "მხოლოდ ქართული სიმბოლოები"
+													? "text-[#EA1919]"
+													: !errors.author && dirtyFields.author
+														? "text-[#14D81C]"
+														: "",
+											)}
+										>
+											მხოლოდ ქართული სიმბოლოები
+										</li>
+									</ul>
+								</div>
+								<div className="flex w-full flex-col">
+									<label htmlFor="title" className="text-sm font-medium">
+										სათური *
+									</label>
+									<input
+										{...register("title")}
+										type="text"
+										id="title"
+										placeholder="შეიყვანეთ სათაური"
+										className={classNames(
+											errors.title
+												? "border-[#EA1919] bg-[#FAF2F3]"
+												: !errors.title && dirtyFields.title
+													? "border-[#14D81C] bg-[#F8FFF8]"
+													: "border-[#E4E3EB] bg-[#FCFCFD]",
+											"my-2 h-11 w-full rounded-xl border px-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+										)}
+									/>
+									<p
+										className={classNames(
+											errors.title?.message
+												? "text-[#EA1919]"
+												: !errors.title && dirtyFields.title
+													? "text-[#14D81C]"
+													: "",
+											"text-xs text-[#85858D]",
+										)}
+									>
+										მინიმუმ 2 სიმბოლო
+									</p>
+								</div>
+							</div>
+							<div className="flex w-full flex-col">
+								<label htmlFor="description" className="text-sm font-medium">
+									აღწერა *
+								</label>
+								<textarea
+									{...register("description")}
+									name="description"
+									id="description"
+									cols=""
+									rows=""
+									placeholder="შეიყვანეთ აღწერა"
+									className={classNames(
+										errors.description
+											? "border-[#EA1919] bg-[#FAF2F3]"
+											: !errors.description && dirtyFields.description
+												? "border-[#14D81C] bg-[#F8FFF8]"
+												: "border-[#E4E3EB] bg-[#FCFCFD]",
+										"my-2 h-32 rounded-xl border p-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+									)}
+								></textarea>
+								<p
+									className={classNames(
+										errors.description?.message
+											? "text-[#EA1919]"
+											: !errors.description && dirtyFields.description
+												? "text-[#14D81C]"
+												: "",
+										"text-xs text-[#85858D]",
+									)}
+								>
+									მინიმუმ 2 სიმბოლო
+								</p>
+							</div>
+							<div className="flex justify-between gap-6">
+								<div className="flex w-full flex-col">
+									<label htmlFor="publish_date" className="text-sm font-medium">
+										გამოქვეყნების თარიღი *
+									</label>
+									<input
+										{...register("publish_date")}
+										type="date"
+										id="publish_date"
+										className={classNames(
+											dirtyFields.publish_date
+												? "border-[#14D81C] bg-[#F8FFF8]"
+												: "border-[#E4E3EB] bg-[#FCFCFD]",
+											"my-2 h-11 w-full rounded-xl border px-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+										)}
+									/>
+								</div>
+								<div className="flex w-full flex-col">
+									<p className="text-sm font-medium">კატეგორია *</p>
+									<div className="my-2 flex h-11 w-full items-center justify-between rounded-xl border bg-[#FCFCFD] px-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]">
+										<img src={ArrowDownIcon} alt="Arrow Down Icon" />
+									</div>
+								</div>
+							</div>
+							<div className="flex w-full flex-col">
+								<label htmlFor="email" className="text-sm font-medium">
+									ელ-ფოსტა
+								</label>
+								<input
+									{...register("email")}
+									type="email"
+									id="email"
+									placeholder="შეიყვანეთ ელ-ფოსტა"
+									className={classNames(
+										errors.email
+											? "border-[#EA1919] bg-[#FAF2F3]"
+											: !errors.email && dirtyFields.email
+												? "border-[#14D81C] bg-[#F8FFF8]"
+												: "border-[#E4E3EB] bg-[#FCFCFD]",
+										"my-2 h-11 w-1/2 rounded-xl border p-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+									)}
+								/>
+								{errors.email && (
+									<div className="flex h-5 items-center gap-2">
+										<img src={InfoIcon} alt="Info Icon" />
+										<p className="text-xs text-[#EA1919]">
+											{errors.email.message}
+										</p>
 									</div>
 								)}
 							</div>

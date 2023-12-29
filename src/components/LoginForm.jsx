@@ -115,7 +115,7 @@ export default function LoginForm({ closeHandler }) {
 											: !errors.email && dirtyFields.email
 												? "border-[#14D81C] bg-[#F8FFF8]"
 												: "border-[#E4E3EB] bg-[#FCFCFD]",
-									"radius-xl my-2 h-11 w-full rounded-xl border-2 p-2 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
+									"my-2 h-11 w-full rounded-xl border px-4 text-sm outline-none focus:border-[#5D37F3] focus:bg-[#F7F7FF]",
 								)}
 							/>
 							{errors.email && (
